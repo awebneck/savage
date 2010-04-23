@@ -18,6 +18,7 @@ module Savage
       def new_from_xml(element)
         new_instance = self.new
         new_instance.preserve_whitespace = true if element['xml:space'] == 'preserve'
+        new_instance.xml_lang = element['xml:lang']
       end
     end
   end
