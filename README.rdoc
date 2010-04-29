@@ -1,6 +1,6 @@
 = Savage
 
-A Ruby library for the reading, manipulation, and (most importantly) output of SVG-format vector graphics.
+A little gem for extracting and maniuplating SVG vector path data.
 
 == Note on Patches/Pull Requests
  
