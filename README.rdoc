@@ -1,6 +1,6 @@
 = Savage
 
-A little gem for extracting and maniuplating SVG vector path data.
+A little gem for extracting and manipulating SVG vector path data.
 
 == Note on Patches/Pull Requests
  
