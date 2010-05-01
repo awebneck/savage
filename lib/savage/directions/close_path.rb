@@ -1,5 +1,5 @@
 module Savage
-  class ClosePathDirection < Direction
+  class ClosePath < Direction
     
     def initialize(absolute=false)
       super

@@ -10,5 +10,7 @@ module Savage
   end
 end
 
-require File.dirname(__FILE__) + "/directions/move_to_direction"
-require File.dirname(__FILE__) + "/directions/close_path_direction"
+require File.dirname(__FILE__) + "/directions/point_target"
+require File.dirname(__FILE__) + "/directions/move_to"
+require File.dirname(__FILE__) + "/directions/line_to"
+require File.dirname(__FILE__) + "/directions/close_path"
