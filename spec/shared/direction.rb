@@ -14,5 +14,8 @@ share_as :DirectionShared do
     it 'should start with a lower-case letter when not absolute' do
       extract_command(@dir.to_command).should == command_code
     end
+    it 'should only have one alphabetical command code' do
+      @dir.to_command.match(/[A-Za-z]/).size.should == 1
+    end
   end
 end

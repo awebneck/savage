@@ -1,12 +1,14 @@
 module Savage
-  class ClosePath < Direction
+  module Directions
+    class ClosePath < Direction
     
-    def initialize(absolute=false)
-      super
-    end
+      def initialize(absolute=false)
+        super
+      end
     
-    def to_command
-      command_string = (absolute?) ? 'Z' : 'z'
+      def to_command
+        command_string = (absolute?) ? 'Z' : 'z'
+      end
     end
   end
 end

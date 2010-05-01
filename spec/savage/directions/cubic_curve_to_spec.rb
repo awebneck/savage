@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-include Savage
+include Savage::Directions
 
 describe CubicCurveTo do
   def dir_class; CubicCurveTo; end
@@ -66,26 +66,52 @@ describe CubicCurveTo do
     direction.absolute?.should == false
   end
   describe '#to_command' do
-    it 'should have exactly 6 numerical parameters' do
-      extract_coordinates(@dir.to_command).length.should == 6
+    context 'when not asked to be continuous' do
+      it 'should have exactly 6 numerical parameters' do
+        extract_coordinates(@dir.to_command).length.should == 6
+      end
+      it 'should show the provided control 1 X value as the first parameter' do
+        extract_coordinates(@dir.to_command)[0].should == 100
+      end
+      it 'should show the provided control 1 Y value as the second parameter' do
+        extract_coordinates(@dir.to_command)[1].should == 200
+      end
+      it 'should show the provided control 2 X value as the third parameter' do
+        extract_coordinates(@dir.to_command)[2].should == 300
+      end
+      it 'should show the provided control 2 Y value as the fourth parameter' do
+        extract_coordinates(@dir.to_command)[3].should == 400
+      end
+      it 'should show the provided target X value as the fifth parameter' do
+        extract_coordinates(@dir.to_command)[4].should == 500
+      end
+      it 'should show the provided target Y value as the sixth parameter' do
+        extract_coordinates(@dir.to_command)[5].should == 600
+      end
     end
-    it 'should show the provided control 1 X value as the first parameter' do
-      extract_coordinates(@dir.to_command)[0].should == 100
-    end
-    it 'should show the provided control 1 Y value as the second parameter' do
-      extract_coordinates(@dir.to_command)[1].should == 200
-    end
-    it 'should show the provided control 2 X value as the third parameter' do
-      extract_coordinates(@dir.to_command)[2].should == 300
-    end
-    it 'should show the provided control 2 Y value as the fourth parameter' do
-      extract_coordinates(@dir.to_command)[3].should == 400
-    end
-    it 'should show the provided target X value as the fifth parameter' do
-      extract_coordinates(@dir.to_command)[4].should == 500
-    end
-    it 'should show the provided target Y value as the sixth parameter' do
-      extract_coordinates(@dir.to_command)[5].should == 600
+    context 'when asked to be continuous' do
+      it 'should start with a capital S when absolute' do
+        abs_dir = create_absolute
+        extract_command(abs_dir.to_command(true)).should == 'S'
+      end
+      it 'should start with a lower-case s when not absolute' do
+        extract_command(@dir.to_command(true)).should == 's'
+      end
+      it 'should have exactly 4 numerical parameters' do
+        extract_coordinates(@dir.to_command(true)).length.should == 4
+      end
+      it 'should show the provided control 2 X value as the first parameter' do
+        extract_coordinates(@dir.to_command(true))[0].should == 300
+      end
+      it 'should show the provided control 2 Y value as the second parameter' do
+        extract_coordinates(@dir.to_command(true))[1].should == 400
+      end
+      it 'should show the provided target X value as the third parameter' do
+        extract_coordinates(@dir.to_command(true))[2].should == 500
+      end
+      it 'should show the provided target Y value as the fourth parameter' do
+        extract_coordinates(@dir.to_command(true))[3].should == 600
+      end
     end
   end
 end

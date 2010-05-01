@@ -1,0 +1,24 @@
+module Savage
+  module Directions
+    class ArcTo < PointTarget
+      attr_accessor :radius, :rotation, :large_arc, :sweep
+    
+      def initialize(radius_x, radius_y, rotation, large_arc, sweep, target_x, target_y, absolute=false)
+        super(target_x, target_y, absolute)
+        @radius = Point.new(radius_x, radius_y)
+        @rotation = rotation
+        @large_arc = large_arc
+        @sweep = sweep
+      end
+    
+      def to_command
+        command_code << "#{@radius.x} #{@radius.y} #{@rotation} #{bool_to_int(@large_arc)} #{bool_to_int(@sweep)} #{target.x} #{target.y}".gsub(/ -/,'-')
+      end
+    
+      private
+        def command_code
+          (absolute?) ? 'A' : 'a'
+        end
+    end
+  end
+end

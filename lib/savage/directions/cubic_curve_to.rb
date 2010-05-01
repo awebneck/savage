@@ -1,22 +1,25 @@
 module Savage
-  class CubicCurveTo < QuadraticCurveTo
-    attr_accessor :control_2
+  module Directions
+    class CubicCurveTo < QuadraticCurveTo
+      attr_accessor :control_1
     
-    def initialize(control_1_x, control_1_y, control_2_x, control_2_y, target_x, target_y, absolute=false)
-      @control_2 = Point.new(control_2_x, control_2_y)
-      super(control_1_x, control_1_y, target_x, target_y, absolute)
-    end
-    
-    def to_command
-      (command_code << "#{@control.x} #{@control.y} #{@control_2.x} #{@control_2.y} #{@target.x} #{@target.y}").gsub(/ -/,'-')
-    end
-    
-    def control_1; @control; end
-    def control_1=(value); @control = value; end
-    
-    private
-      def command_code
-        (absolute?) ? 'C' : 'c'
+      def initialize(control_1_x, control_1_y, control_2_x, control_2_y, target_x, target_y, absolute=false)
+        @control_1 = Point.new(control_1_x, control_1_y)
+        super(control_2_x, control_2_y, target_x, target_y, absolute)
       end
+    
+      def to_command(continuous=false)
+        command_code(continuous) << ((!continuous) ? "#{@control_1.x} #{@control_1.y} #{@control.x} #{@control.y} #{@target.x} #{@target.y}".gsub(/ -/,'-') : super().gsub(/[A-Za-z]/,''))
+      end
+    
+      def control_2; @control; end
+      def control_2=(value); @control = value; end
+    
+      private
+        def command_code(continuous=false)
+          return (absolute?) ? 'C' : 'c' unless continuous
+          (absolute?) ? 'S' : 's'
+        end
+    end
   end
 end

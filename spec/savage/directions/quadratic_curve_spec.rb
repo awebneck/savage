@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-include Savage
+include Savage::Directions
 
 describe QuadraticCurveTo do
   def dir_class; QuadraticCurveTo; end
@@ -45,15 +45,22 @@ describe QuadraticCurveTo do
     direction = dir_class.new 45, 50, 60, 70, true
     direction.absolute?.should == true
   end
-  it 'should not be absolute if constructed with a false seventh parameter' do
+  it 'should not be absolute if constructed with a false fifth parameter' do
     direction = dir_class.new 45, 50, 60, 70, false
     direction.absolute?.should == false
   end
-  it 'should not be absolute if constructed with only six parameters' do
+  it 'should not be absolute if constructed with only four parameters' do
     direction = dir_class.new 45, 50, 60, 70
     direction.absolute?.should == false
   end
   describe '#to_command' do
+    it 'should start with a capital T when absolute' do
+      abs_dir = create_absolute
+      extract_command(abs_dir.to_command(true)).should == 'T'
+    end
+    it 'should start with a lower-case t when not absolute' do
+      extract_command(@dir.to_command(true)).should == 't'
+    end
     it 'should have exactly 4 numerical parameters' do
       extract_coordinates(@dir.to_command).length.should == 4
     end

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-include Savage
+include Savage::Directions
 
 describe LineTo do
   def dir_class; LineTo; end
