@@ -4,15 +4,11 @@ include Savage
 
 describe MoveToDirection do
   before :each do
-    @abs_dir = MoveToDirection.new(100,200,true)
-    @nonabs_dir = MoveToDirection.new(100,200)
+    @dir = MoveToDirection.new(100,200)
   end
-  it 'should have a to_command method' do
-    @nonabs_dir.respond_to?(:to_command).should == true
-  end
-  it 'should have an absolute? method' do
-    @nonabs_dir.respond_to?(:absolute?).should == true
-  end
+  include DirectionShared
+  include TargetedShared
+  include Command
   it 'should be constructed with at least an x and y parameter' do
     lambda { MoveToDirection.new }.should raise_error
     lambda { MoveToDirection.new 45 }.should raise_error
@@ -32,20 +28,17 @@ describe MoveToDirection do
   end
   describe '#to_command' do
     it 'should start with a capital M when absolute' do
-      (@abs_dir.to_command =~ /^M/).should_not be_nil
+      abs_dir = MoveToDirection.new(100,200,true)
+      extract_command(abs_dir.to_command).should == 'M'
     end
     it 'should start with a lower-case m when not absolute' do
-      (@nonabs_dir.to_command =~ /^m/).should_not be_nil
+      extract_command(@dir.to_command).should == 'm'
     end
     it 'should show the provided X value as the next parameter' do
-      match = @nonabs_dir.to_command.match /^[a-zA-Z]([0-9]+(.[0-9]+)?)/
-      match.should_not be_nil
-      $1.to_f.should == 100
+      extract_coordinates(@dir.to_command)[0].should == 100
     end
     it 'should show the provided Y value as the final parameter' do
-      match = @nonabs_dir.to_command.match /^[a-zA-Z]([0-9]+(.[0-9]+)?) ([0-9]+(.[0-9]+)?)$/
-      match.should_not be_nil
-      $3.to_f.should == 200
+      extract_coordinates(@dir.to_command)[1].should == 200
     end
   end
 end

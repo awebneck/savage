@@ -7,13 +7,16 @@ Spork.prefork do
   # need to restart spork for it take effect.
   $LOAD_PATH.unshift(File.dirname(__FILE__))
   $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+  $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'shared'))
+  
   require 'savage'
   require 'spec'
   require 'spec/autorun'
-
   Spec::Runner.configure do |config|
 
   end
+  
+  Dir[File.join(File.dirname(__FILE__) << '/shared', "*.rb")].each {|file| require File.basename(file) }
 end
 
 Spork.each_run do

@@ -4,13 +4,9 @@ module Savage
     attr_accessor :target_x, :target_y
     
     def initialize(x, y, absolute=false)
-      @absolute = absolute
       @target_x = x
       @target_y = y
-    end
-    
-    def absolute?
-      @absolute
+      super(absolute)
     end
     
     def to_command
