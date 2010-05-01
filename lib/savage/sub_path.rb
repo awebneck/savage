@@ -12,7 +12,10 @@ module Savage
     attr_accessor :commands
     
     def move_to(*args)
-      return @commands << Directions::MoveTo.new(*args) if @commands.empty?
+      return nil unless @commands.empty?
+      new_move = Directions::MoveTo.new(*args)
+      @commands <<  new_move
+      new_move
     end
     
     def initialize

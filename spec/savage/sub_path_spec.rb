@@ -30,6 +30,31 @@ describe SubPath do
   it 'should have a close_path method' do
     SubPath.new.respond_to?(:close_path).should == true
   end
+  describe 'move_to' do
+    before :each do
+      @path = SubPath.new
+    end
+    context 'when the command list is empty' do
+      it 'should add a MoveTo command on to the commands list' do
+        this_move = @path.move_to(100,200)
+        @path.commands.should == [this_move]
+      end
+      it 'should return the newly created MoveTo command' do
+        @path.move_to(100,200).class.should == Directions::MoveTo
+      end
+    end
+    context 'when the command list is not empty' do
+      it 'does something' do
+        first_move = @path.move_to(200,400)
+        @path.move_to(100,200)
+        @path.commands.should == [first_move]
+      end
+      it 'should return nil' do
+        @path.move_to(200,400)
+        @path.move_to(100,200).nil?.should == true
+      end
+    end
+  end
   describe '#commands' do
     it 'should be able to access items via the bracket operator' do
       SubPath.new.commands.respond_to?(:[]).should == true
