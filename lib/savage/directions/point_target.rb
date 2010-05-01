@@ -1,16 +1,15 @@
 module Savage
   class PointTarget < Direction
     
-    attr_accessor :target_x, :target_y
+    attr_accessor :target
     
     def initialize(x, y, absolute=false)
-      @target_x = x
-      @target_y = y
+      @target = Point.new(x,y)
       super(absolute)
     end
     
     def to_command
-      command_code << "#{@target_x.to_s} #{@target_y.to_s}"
+      command_code << "#{@target.x.to_s} #{@target.y.to_s}"
     end
     
     private

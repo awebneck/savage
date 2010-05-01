@@ -1,19 +1,18 @@
 share_as :DirectionShared do
+  include Command
   it 'should have a to_command method' do
     @dir.respond_to?(:to_command).should == true
   end
   it 'should have an absolute? method' do
     @dir.respond_to?(:absolute?).should == true
   end
-end
-
-share_as :TargetedShared do
-  it 'should have an accessible target x, based on the constructor argument' do
-    @dir.respond_to?(:target_x).should == true
-    @dir.target_x.should == 100
-  end
-  it 'should have an accessible target y, based on the constructor argument' do
-    @dir.respond_to?(:target_y).should == true
-    @dir.target_y.should == 200
+  describe '#to_command' do
+    it 'should start with a capital letter when absolute' do
+      abs_dir = create_absolute
+      extract_command(abs_dir.to_command).should == command_code.upcase
+    end
+    it 'should start with a lower-case letter when not absolute' do
+      extract_command(@dir.to_command).should == command_code
+    end
   end
 end

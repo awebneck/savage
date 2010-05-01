@@ -6,6 +6,8 @@ describe ClosePath do
   before :each do
     @dir = ClosePath.new()
   end
+  def create_absolute; ClosePath.new(true); end
+  def command_code; 'z'; end
   include DirectionShared
   it 'should be constructed with with either no parameters or a single boolean parameter' do
     lambda { ClosePath.new }.should_not raise_error
@@ -23,14 +25,5 @@ describe ClosePath do
   it 'should not be absolute if constructed with no parameters' do
     direction = ClosePath.new()
     direction.absolute?.should == false
-  end
-  describe '#to_command' do
-    it 'should be a capital Z when absolute' do
-      abs_dir = ClosePath.new true
-      abs_dir.to_command.should == 'Z'
-    end
-    it 'should be a lower-case z when not absolute' do
-      @dir.to_command.should == 'z'
-    end
   end
 end
