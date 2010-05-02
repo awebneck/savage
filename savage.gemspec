@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{savage}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeremy Holland"]
@@ -24,8 +24,8 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/savage.rb",
-     "lib/savage/core_extensions/string.rb",
      "lib/savage/direction.rb",
+     "lib/savage/direction_proxy.rb",
      "lib/savage/directions/arc_to.rb",
      "lib/savage/directions/close_path.rb",
      "lib/savage/directions/coordinate_target.rb",
@@ -36,9 +36,11 @@ Gem::Specification.new do |s|
      "lib/savage/directions/point_target.rb",
      "lib/savage/directions/quadratic_curve_to.rb",
      "lib/savage/directions/vertical_to.rb",
+     "lib/savage/parser.rb",
      "lib/savage/path.rb",
      "lib/savage/sub_path.rb",
      "lib/savage/utils.rb",
+     "savage.gemspec",
      "spec/savage/directions/arc_to_spec.rb",
      "spec/savage/directions/close_path_spec.rb",
      "spec/savage/directions/cubic_curve_to_spec.rb",
@@ -48,6 +50,7 @@ Gem::Specification.new do |s|
      "spec/savage/directions/point_spec.rb",
      "spec/savage/directions/quadratic_curve_spec.rb",
      "spec/savage/directions/vertical_to_spec.rb",
+     "spec/savage/parser_spec.rb",
      "spec/savage/path_spec.rb",
      "spec/savage/sub_path_spec.rb",
      "spec/savage_spec.rb",
@@ -73,6 +76,7 @@ Gem::Specification.new do |s|
      "spec/savage/directions/point_spec.rb",
      "spec/savage/directions/quadratic_curve_spec.rb",
      "spec/savage/directions/vertical_to_spec.rb",
+     "spec/savage/parser_spec.rb",
      "spec/savage/path_spec.rb",
      "spec/savage/sub_path_spec.rb",
      "spec/savage_spec.rb",
