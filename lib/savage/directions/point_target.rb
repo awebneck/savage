@@ -12,9 +12,6 @@ module Savage
       def to_command
         command_code << "#{@target.x.to_s} #{@target.y.to_s}".gsub(/ -/,'-')
       end
-    
-      private
-        def command_code; ''; end;
     end
   end
 end

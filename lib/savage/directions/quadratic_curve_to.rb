@@ -3,20 +3,31 @@ module Savage
     class QuadraticCurveTo < PointTarget
       attr_accessor :control
     
-      def initialize(control_x, control_y, target_x, target_y, absolute=true)
-        @control = Point.new(control_x, control_y)
-        super(target_x, target_y, absolute)
-      end
-    
-      def to_command(continuous=false)
-        command_code(continuous) << ((!continuous) ? "#{@control.x} #{@control.y} #{@target.x} #{@target.y}".gsub(/ -/,'-') : super().gsub(/[A-Za-z]/,''))
-      end
-    
-      private
-        def command_code(continuous=false)
-          return (absolute?) ? 'Q' : 'q' unless continuous
-          (absolute?) ? 'T' : 't'
+      def initialize(*args)
+        raise ArgumentError if args.length < 2
+        case args.length
+        when 2
+          super(args[0],args[1],true)
+        when 3
+          raise ArgumentError if args[2].kind_of?(Numeric)
+          super(args[0],args[1],args[2])
+        when 4
+          @control = Point.new(args[0],args[1])
+          super(args[2],args[3],true)
+        when 5
+          @control = Point.new(args[0],args[1])
+          super(args[2],args[3],args[4])
         end
+      end
+    
+      def to_command
+        command_code << ((@control) ? "#{@control.x} #{@control.y} #{@target.x} #{@target.y}".gsub(/ -/,'-') : super().gsub(/[A-Za-z]/,''))
+      end
+
+      def command_code
+        return (absolute?) ? 'Q' : 'q' if @control
+        (absolute?) ? 'T' : 't'
+      end
     end
   end
 end
