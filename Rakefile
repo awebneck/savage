@@ -5,9 +5,9 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "savage"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "jeremy@bubbleup.net"
+    gem.summary = %Q{A little library to manipulate SVG path data}
+    gem.description = %Q{A little gem for extracting and manipulating SVG vector path data.}
+    gem.email = "jeremy@jeremypholland.com"
     gem.homepage = "http://github.com/therubyneck/savage"
     gem.authors = ["Jeremy Holland"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
