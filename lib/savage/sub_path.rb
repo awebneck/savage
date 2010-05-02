@@ -1,14 +1,12 @@
 module Savage
   class SubPath
     include Utils
+    include DirectionProxy
     
-    Directions.constants.each do |constant|
-      unless %w[PointTarget CoordinateTarget Point MoveTo].include? constant
-        sym = constant.gsub(/[A-Z]/) { |p| '_' + p.downcase }[1..-1].to_sym
-        define_method(sym) do |*args|
-          (@directions << constantize("Savage::Directions::" << constant).new(*args)).last
-        end
-      end
+    define_proxies do |sym,const|
+      define_method(sym) do |*args|
+        (@directions << constantize("Savage::Directions::" << const).new(*args)).last
+      end 
     end
     
     attr_accessor :directions
@@ -18,8 +16,10 @@ module Savage
       (@directions << Directions::MoveTo.new(*args)).last
     end
     
-    def initialize
+    def initialize(*args)
       @directions = []
+      move_to(*args) if (2..3).include?(args.length)
+      yield self if block_given?
     end
     
     def to_command

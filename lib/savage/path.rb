@@ -1,16 +1,41 @@
 module Savage
   class Path
+    require File.dirname(__FILE__) + "/direction_proxy"
     require File.dirname(__FILE__) + "/sub_path"
     
-    def initialize(path_string=nil)
-      raise ArgumentError unless path_string.nil? || path_string.kind_of?(String)
+    include Utils
+    include DirectionProxy
+    
+    attr_accessor :subpaths
+    
+    define_proxies do |sym,const|
+      define_method(sym) do |*args|
+        @subpaths.last.send(sym,*args)
+      end 
     end
     
-    def subpaths
-      return []
+    def initialize(*args)
+      @subpaths = [SubPath.new]
+      @subpaths.last.move_to(*args) if (2..3).include?(*args.length)
+      yield self if block_given?
+    end
+    
+    def directions
+      directions = []
+      @subpaths.each { |subpath| directions.concat(subpath.directions) }
+      directions
+    end
+    
+    def move_to(*args)
+      (@subpaths << SubPath.new(*args)).last
+    end
+    
+    def closed?
+      @subpaths.last.closed?
     end
     
     def to_command
+      @subpaths.collect { |subpath| subpath.to_command }.join
     end
   end
 end

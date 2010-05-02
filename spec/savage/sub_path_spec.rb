@@ -36,6 +36,34 @@ describe SubPath do
   it 'should have a to_command method' do
     SubPath.new.respond_to?(:to_command).should == true
   end
+  it 'should be able to be constructed empty' do
+    lambda { SubPath.new }.should_not raise_error
+  end
+  it 'should be able to be constructed with a starting point (absolute move to)' do
+    path = SubPath.new(100,200)
+    path.directions.length.should == 1
+    path.directions.last.class.should == Directions::MoveTo
+  end
+  it 'should be able to build itself in a block' do
+    path = SubPath.new(100,200) do |p|
+      p.line_to 300, 400
+      p.cubic_curve_to 500,600,700,800,900,1000
+      p.arc_to 100,200,123,1,1,300,400
+    end
+    path.directions[0].class.should == Directions::MoveTo
+    path.directions[1].class.should == Directions::LineTo
+    path.directions[2].class.should == Directions::CubicCurveTo
+    path.directions[3].class.should == Directions::ArcTo
+    
+    path2 = SubPath.new do |p|
+      p.line_to 300, 400
+      p.cubic_curve_to 500,600,700,800,900,1000
+      p.arc_to 100,200,123,1,1,300,400
+    end
+    path2.directions[0].class.should == Directions::LineTo
+    path2.directions[1].class.should == Directions::CubicCurveTo
+    path2.directions[2].class.should == Directions::ArcTo
+  end
   describe '#closed?' do
     it 'should be true if the last direction in the directions list is of type ClosePath' do
       path = SubPath.new
@@ -94,7 +122,7 @@ describe SubPath do
       @path.to_command.should == @dir_1.to_command << dir_2.to_command << dir_3.to_command << dir_4.to_command[1..-1].insert(0,' ')
     end
   end
-  describe 'move_to' do
+  describe '#move_to' do
     before :each do
       @path = SubPath.new
     end
