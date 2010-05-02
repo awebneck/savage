@@ -27,7 +27,11 @@ module Savage
     end
     
     def move_to(*args)
-      (@subpaths << SubPath.new(*args)).last
+      unless (@subpaths.last.directions.empty?)
+        (@subpaths << SubPath.new(*args)).last
+      else
+        @subpaths.last.move_to(*args)
+      end
     end
     
     def closed?

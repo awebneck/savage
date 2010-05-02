@@ -69,10 +69,20 @@ describe Path do
     Path.new.respond_to?(:to_command).should == true
   end
   describe '#move_to' do
-    it 'should create a new subpath with that movement therein' do
-      path = Path.new
+    it 'should create a new subpath with that movement therein if there is already a populated subpath' do
+      path = Path.new(200,300) do |p|
+        p.line_to(123,456)
+        p.close_path
+      end
       path.move_to(200,300)
       path.subpaths.length.should == 2
+      path.subpaths.last.directions.length.should == 1
+      path.subpaths.last.directions.last.class.should == Directions::MoveTo
+    end
+    it 'should create append the movement if the last subpath is empty a populated subpath' do
+      path = Path.new
+      path.move_to(200,300)
+      path.subpaths.length.should == 1
       path.subpaths.last.directions.length.should == 1
       path.subpaths.last.directions.last.class.should == Directions::MoveTo
     end
