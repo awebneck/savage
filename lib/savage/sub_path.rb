@@ -1,47 +1,47 @@
 module Savage
   class SubPath
+    include Utils
+    
     Directions.constants.each do |constant|
       unless %w[PointTarget CoordinateTarget Point MoveTo].include? constant
         sym = constant.gsub(/[A-Z]/) { |p| '_' + p.downcase }[1..-1].to_sym
         define_method(sym) do |*args|
-          new_command = ("Savage::Directions::" << constant).constantize.new(*args)
-          @commands << new_command
-          new_command
+          (@directions << constantize("Savage::Directions::" << constant).new(*args)).last
         end
       end
     end
     
-    attr_accessor :commands
+    attr_accessor :directions
     
     def move_to(*args)
-      return nil unless @commands.empty?
-      new_move = Directions::MoveTo.new(*args)
-      @commands <<  new_move
-      new_move
+      return nil unless @directions.empty?
+      (@directions << Directions::MoveTo.new(*args)).last
     end
     
     def initialize
-      @commands = []
+      @directions = []
     end
     
-    # FIXME - refactor this monstrosity
     def to_command
-      prev_command = nil
-      command = ''
-      @commands.each do |dir|
-        this_command = dir.to_command
-        if dir.class == prev_command || (dir.class == Directions::LineTo && prev_command == Directions::MoveTo)
-          this_command.gsub!(/^[A-Za-z]/,'')
-          this_command = " " << this_command unless this_command.match(/^-/)
+      @directions.to_enum(:each_with_index).collect { |dir, i|
+        command_string = dir.to_command
+        if i > 0
+          prev_command_code = @directions[i-1].command_code
+          if dir.command_code == prev_command_code || (prev_command_code.match(/^[Mm]$/) && dir.command_code == 'L') 
+            command_string.gsub!(/^[A-Za-z]/,'')
+            command_string.insert(0,' ') unless command_string.match(/^-/)
+          end
         end
-        prev_command = dir.class
-        command << this_command
-      end
-      command
+        command_string
+      }.join
+    end
+    
+    def commands
+      @directions
     end
     
     def closed?
-      @commands.last.kind_of? Directions::ClosePath
+      @directions.last.kind_of? Directions::ClosePath
     end
   end
 end

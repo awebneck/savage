@@ -12,9 +12,6 @@ module Savage
       def to_command
         command_code << @target.to_s
       end
-    
-      private
-        def command_code; ''; end;
     end
   end
 end

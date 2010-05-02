@@ -3,8 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 include Savage
 
 describe SubPath do
-  it 'should have a commands list' do
-    SubPath.new.respond_to?(:commands).should == true
+  it 'should have a directions list' do
+    SubPath.new.respond_to?(:directions).should == true
   end
   it 'should have a move_to method' do
     SubPath.new.respond_to?(:move_to).should == true
@@ -37,14 +37,14 @@ describe SubPath do
     SubPath.new.respond_to?(:to_command).should == true
   end
   describe '#closed?' do
-    it 'should be true if the last direction in the commands list is of type ClosePath' do
+    it 'should be true if the last direction in the directions list is of type ClosePath' do
       path = SubPath.new
       path.move_to 100, 300
       path.line_to 243, 21
       path.close_path
       path.closed?.should == true
     end
-    it 'should be false if the last direction in the commands list is of any other type or absent' do
+    it 'should be false if the last direction in the directions list is of any other type or absent' do
       path = SubPath.new
       path.move_to 100, 300
       path.line_to 234, 21
@@ -54,29 +54,44 @@ describe SubPath do
     end
   end
   describe '#to_command' do
-    it 'should output the concatenation of all the subcommands if no two are the same in sequence' do
-      path = SubPath.new
-      path.move_to 100, 200
-      path.horizontal_to -200
-      path.quadratic_curve_to 342, -341.23, 405, 223
-      path.line_to -342.002, 231.42
-      path.close_path
-      path.to_command.should == 'M100 200H-200Q342-341.23 405 223L-342.002 231.42Z'
+    before :each do
+      @path = SubPath.new
+      @dir_1 = @path.move_to 100, 200
+    end
+    it 'should output the concatenation of all the subdirections if no two are the same in sequence' do
+      dir_2 = @path.horizontal_to -200
+      dir_3 = @path.quadratic_curve_to 342, -341.23, 405, 223
+      dir_4 = @path.line_to -342.002, 231.42
+      dir_5 = @path.close_path
+      @path.to_command.should == @dir_1.to_command << dir_2.to_command << dir_3.to_command << dir_4.to_command << dir_5.to_command
     end
     it 'should strip the command code if the previous code was the same as the present' do
-      path = SubPath.new
-      com1 = path.move_to 100, 200
-      com2 = path.horizontal_to -200
-      com4 = path.line_to -342.002, 231.42
-      com4 = path.line_to -234, 502
-      path.to_command.should == 'M100 200H-200L-342.002 231.42-234 502'
+      dir_2 = @path.horizontal_to -200
+      dir_3 = @path.line_to -342.002, 231.42
+      dir_4 = @path.line_to -234, 502
+      @path.to_command.should == @dir_1.to_command << dir_2.to_command << dir_3.to_command << dir_4.to_command[1..-1]
     end
-    it 'should strip the command code if the previous code was a MoveTo and the current code is a LineTo' do
-      path = SubPath.new
-      com1 = path.move_to 100, 200
-      com4 = path.line_to -342.002, 231.42
-      com4 = path.line_to -234, 502
-      path.to_command.should == 'M100 200-342.002 231.42-234 502'
+    it 'should not strip the command code if the previous code was the same as the present, but of different absoluteness' do
+      dir_2 = @path.horizontal_to -200
+      dir_3 = @path.line_to -342.002, 231.42
+      dir_4 = @path.line_to -234, 502, false
+      @path.to_command.should == @dir_1.to_command << dir_2.to_command << dir_3.to_command << dir_4.to_command
+    end
+    it 'should strip the command code if the previous code was a MoveTo and the current code is an absolute LineTo' do
+      dir_2 = @path.line_to -342.002, 231.42
+      dir_3 = @path.line_to -234, 502
+      @path.to_command.should == @dir_1.to_command << dir_2.to_command[1..-1] << dir_3.to_command[1..-1]
+    end
+    it 'should not strip the command code if the previous code was a MoveTo and the current code is a relative LineTo' do
+      dir_2 = @path.line_to -342.002, 231.42, false
+      dir_3 = @path.line_to -234, 502
+      @path.to_command.should == @dir_1.to_command << dir_2.to_command << dir_3.to_command
+    end
+    it 'should add leading whitespace if the first coordinate of the code-stripped direction is not negative' do
+      dir_2 = @path.horizontal_to -200
+      dir_3 = @path.line_to -342.002, 231.42
+      dir_4 = @path.line_to 234, 502
+      @path.to_command.should == @dir_1.to_command << dir_2.to_command << dir_3.to_command << dir_4.to_command[1..-1].insert(0,' ')
     end
   end
   describe 'move_to' do
@@ -84,9 +99,9 @@ describe SubPath do
       @path = SubPath.new
     end
     context 'when the command list is empty' do
-      it 'should add a MoveTo command on to the commands list' do
+      it 'should add a MoveTo command on to the directions list' do
         this_move = @path.move_to(100,200)
-        @path.commands.should == [this_move]
+        @path.directions.should == [this_move]
       end
       it 'should return the newly created MoveTo command' do
         @path.move_to(100,200).class.should == Directions::MoveTo
@@ -96,7 +111,7 @@ describe SubPath do
       it 'does something' do
         first_move = @path.move_to(200,400)
         @path.move_to(100,200)
-        @path.commands.should == [first_move]
+        @path.directions.should == [first_move]
       end
       it 'should return nil' do
         @path.move_to(200,400)
@@ -104,9 +119,9 @@ describe SubPath do
       end
     end
   end
-  describe '#commands' do
+  describe '#directions' do
     it 'should be able to access items via the bracket operator' do
-      SubPath.new.commands.respond_to?(:[]).should == true
+      SubPath.new.directions.respond_to?(:[]).should == true
     end
   end
 end

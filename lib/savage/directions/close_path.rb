@@ -7,7 +7,11 @@ module Savage
       end
     
       def to_command
-        command_string = (absolute?) ? 'Z' : 'z'
+        command_code
+      end
+      
+      def command_code
+        (absolute?) ? 'Z' : 'z'
       end
     end
   end

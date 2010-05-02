@@ -14,11 +14,10 @@ module Savage
       def to_command
         command_code << "#{@radius.x} #{@radius.y} #{@rotation} #{bool_to_int(@large_arc)} #{bool_to_int(@sweep)} #{target.x} #{target.y}".gsub(/ -/,'-')
       end
-    
-      private
-        def command_code
-          (absolute?) ? 'A' : 'a'
-        end
+      
+      def command_code
+        (absolute?) ? 'A' : 'a'
+      end
     end
   end
 end
