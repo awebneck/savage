@@ -3,7 +3,7 @@ module Savage
     class ArcTo < PointTarget
       attr_accessor :radius, :rotation, :large_arc, :sweep
     
-      def initialize(radius_x, radius_y, rotation, large_arc, sweep, target_x, target_y, absolute=false)
+      def initialize(radius_x, radius_y, rotation, large_arc, sweep, target_x, target_y, absolute=true)
         super(target_x, target_y, absolute)
         @radius = Point.new(radius_x, radius_y)
         @rotation = rotation

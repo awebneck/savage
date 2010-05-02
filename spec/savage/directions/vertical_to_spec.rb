@@ -4,7 +4,7 @@ include Savage::Directions
 
 describe VerticalTo do
   def dir_class; VerticalTo; end
-  def create_absolute; VerticalTo.new(100,true); end
+  def create_relative; VerticalTo.new(100,false); end
   def command_code; 'v'; end
   include CoordinateTargetShared
 end

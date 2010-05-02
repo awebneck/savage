@@ -4,7 +4,7 @@ module Savage
     
       attr_accessor :target
     
-      def initialize(x, y, absolute=false)
+      def initialize(x, y, absolute=true)
         @target = Point.new(x,y)
         super(absolute)
       end

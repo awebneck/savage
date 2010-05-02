@@ -6,7 +6,7 @@ describe ClosePath do
   before :each do
     @dir = ClosePath.new()
   end
-  def create_absolute; ClosePath.new(true); end
+  def create_relative; ClosePath.new(false); end
   def command_code; 'z'; end
   include DirectionShared
   it 'should be constructed with with either no parameters or a single boolean parameter' do
@@ -14,16 +14,16 @@ describe ClosePath do
     lambda { ClosePath.new true }.should_not raise_error
     lambda { ClosePath.new 45, 50 }.should raise_error
   end
-  it 'should be absolute if constructed with a true parameter' do
-    direction = ClosePath.new(true)
-    direction.absolute?.should == true
-  end
-  it 'should not be absolute if constructed with a false parameter' do
+  it 'should be relative if constructed with a false parameter' do
     direction = ClosePath.new(false)
     direction.absolute?.should == false
   end
-  it 'should not be absolute if constructed with no parameters' do
+  it 'should be absolute if constructed with a false parameter' do
+    direction = ClosePath.new(true)
+    direction.absolute?.should == true
+  end
+  it 'should be absolute if constructed with no parameters' do
     direction = ClosePath.new()
-    direction.absolute?.should == false
+    direction.absolute?.should == true
   end
 end

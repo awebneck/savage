@@ -30,6 +30,55 @@ describe SubPath do
   it 'should have a close_path method' do
     SubPath.new.respond_to?(:close_path).should == true
   end
+  it 'should have a closed? method' do
+    SubPath.new.respond_to?(:closed?).should == true
+  end
+  it 'should have a to_command method' do
+    SubPath.new.respond_to?(:to_command).should == true
+  end
+  describe '#closed?' do
+    it 'should be true if the last direction in the commands list is of type ClosePath' do
+      path = SubPath.new
+      path.move_to 100, 300
+      path.line_to 243, 21
+      path.close_path
+      path.closed?.should == true
+    end
+    it 'should be false if the last direction in the commands list is of any other type or absent' do
+      path = SubPath.new
+      path.move_to 100, 300
+      path.line_to 234, 21
+      path.closed?.should == false
+      path2 = SubPath.new
+      path2.closed?.should == false
+    end
+  end
+  describe '#to_command' do
+    it 'should output the concatenation of all the subcommands if no two are the same in sequence' do
+      path = SubPath.new
+      path.move_to 100, 200
+      path.horizontal_to -200
+      path.quadratic_curve_to 342, -341.23, 405, 223
+      path.line_to -342.002, 231.42
+      path.close_path
+      path.to_command.should == 'M100 200H-200Q342-341.23 405 223L-342.002 231.42Z'
+    end
+    it 'should strip the command code if the previous code was the same as the present' do
+      path = SubPath.new
+      com1 = path.move_to 100, 200
+      com2 = path.horizontal_to -200
+      com4 = path.line_to -342.002, 231.42
+      com4 = path.line_to -234, 502
+      path.to_command.should == 'M100 200H-200L-342.002 231.42-234 502'
+    end
+    it 'should strip the command code if the previous code was a MoveTo and the current code is a LineTo' do
+      path = SubPath.new
+      com1 = path.move_to 100, 200
+      com4 = path.line_to -342.002, 231.42
+      com4 = path.line_to -234, 502
+      path.to_command.should == 'M100 200-342.002 231.42-234 502'
+    end
+  end
   describe 'move_to' do
     before :each do
       @path = SubPath.new

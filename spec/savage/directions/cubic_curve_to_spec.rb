@@ -4,7 +4,7 @@ include Savage::Directions
 
 describe CubicCurveTo do
   def dir_class; CubicCurveTo; end
-  def create_absolute; CubicCurveTo.new(100,200,300,400,500,600,true); end
+  def create_relative; CubicCurveTo.new(100,200,300,400,500,600,false); end
   def command_code; 'c'; end
   
   before :each do
@@ -53,17 +53,17 @@ describe CubicCurveTo do
     lambda { dir_class.new 45, 50, 60, 70, 80, 90 }.should_not raise_error
     lambda { dir_class.new 45, 50, 60, 70, 80, 90, true }.should_not raise_error
   end
-  it 'should be absolute if constructed with a true seventh parameter' do
-    direction = dir_class.new 45, 50, 60, 70, 80, 90, true
-    direction.absolute?.should == true
-  end
-  it 'should not be absolute if constructed with a false seventh parameter' do
+  it 'should be relative if constructed with a true seventh parameter' do
     direction = dir_class.new 45, 50, 60, 70, 80, 90, false
     direction.absolute?.should == false
   end
-  it 'should not be absolute if constructed with only six parameters' do
+  it 'should be absolute if constructed with a false seventh parameter' do
+    direction = dir_class.new 45, 50, 60, 70, 80, 90, true
+    direction.absolute?.should == true
+  end
+  it 'should be absolute if constructed with only six parameters' do
     direction = dir_class.new 45, 50, 60, 70, 80, 90
-    direction.absolute?.should == false
+    direction.absolute?.should == true
   end
   describe '#to_command' do
     context 'when not asked to be continuous' do
@@ -90,12 +90,12 @@ describe CubicCurveTo do
       end
     end
     context 'when asked to be continuous' do
-      it 'should start with a capital S when absolute' do
-        abs_dir = create_absolute
-        extract_command(abs_dir.to_command(true)).should == 'S'
-      end
       it 'should start with a lower-case s when not absolute' do
-        extract_command(@dir.to_command(true)).should == 's'
+        rel_dir = create_relative
+        extract_command(rel_dir.to_command(true)).should == 's'
+      end
+      it 'should start with a capital S when absolute' do
+        extract_command(@dir.to_command(true)).should == 'S'
       end
       it 'should have exactly 4 numerical parameters' do
         extract_coordinates(@dir.to_command(true)).length.should == 4

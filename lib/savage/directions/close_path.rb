@@ -2,8 +2,8 @@ module Savage
   module Directions
     class ClosePath < Direction
     
-      def initialize(absolute=false)
-        super
+      def initialize(absolute=true)
+        super(absolute)
       end
     
       def to_command

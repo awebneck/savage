@@ -3,7 +3,7 @@ module Savage
     class QuadraticCurveTo < PointTarget
       attr_accessor :control
     
-      def initialize(control_x, control_y, target_x, target_y, absolute=false)
+      def initialize(control_x, control_y, target_x, target_y, absolute=true)
         @control = Point.new(control_x, control_y)
         super(target_x, target_y, absolute)
       end

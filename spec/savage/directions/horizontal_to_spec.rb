@@ -4,7 +4,7 @@ include Savage::Directions
 
 describe HorizontalTo do
   def dir_class; HorizontalTo; end
-  def create_absolute; HorizontalTo.new(100,true); end
+  def create_relative; HorizontalTo.new(100,false); end
   def command_code; 'h'; end
   include CoordinateTargetShared
 end

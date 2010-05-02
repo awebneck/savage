@@ -4,7 +4,7 @@ module Savage
     
       attr_accessor :target
     
-      def initialize(target, absolute=false)
+      def initialize(target, absolute=true)
         @target = target
         super(absolute)
       end

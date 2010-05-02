@@ -15,4 +15,10 @@ describe Path do
     lambda{ Path.new(56) }.should raise_error
     lambda{ Path.new(Object.new) }.should raise_error
   end
+  it 'should have subpaths' do
+    Path.new.respond_to?(:subpaths).should == true
+  end
+  it 'should have a to_command method' do
+    Path.new.respond_to?(:to_command).should == true
+  end
 end

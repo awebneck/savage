@@ -4,7 +4,7 @@ include Savage::Directions
 
 describe QuadraticCurveTo do
   def dir_class; QuadraticCurveTo; end
-  def create_absolute; QuadraticCurveTo.new(100,200,300,400,true); end
+  def create_relative; QuadraticCurveTo.new(100,200,300,400,false); end
   def command_code; 'q'; end
   
   before :each do
@@ -41,25 +41,25 @@ describe QuadraticCurveTo do
     lambda { dir_class.new 45, 50, 60, 70 }.should_not raise_error
     lambda { dir_class.new 45, 50, 60, 70, true }.should_not raise_error
   end
+  it 'should be relative if constructed with a false fifth parameter' do
+    direction = dir_class.new 45, 50, 60, 70, false
+    direction.absolute?.should == false
+  end
   it 'should be absolute if constructed with a true fifth parameter' do
     direction = dir_class.new 45, 50, 60, 70, true
     direction.absolute?.should == true
   end
-  it 'should not be absolute if constructed with a false fifth parameter' do
-    direction = dir_class.new 45, 50, 60, 70, false
-    direction.absolute?.should == false
-  end
-  it 'should not be absolute if constructed with only four parameters' do
+  it 'should be absolute if constructed with only four parameters' do
     direction = dir_class.new 45, 50, 60, 70
-    direction.absolute?.should == false
+    direction.absolute?.should == true
   end
   describe '#to_command' do
-    it 'should start with a capital T when absolute' do
-      abs_dir = create_absolute
-      extract_command(abs_dir.to_command(true)).should == 'T'
+    it 'should start with a capital T when not absolute' do
+      rel_dir = create_relative
+      extract_command(rel_dir.to_command(true)).should == 't'
     end
-    it 'should start with a lower-case t when not absolute' do
-      extract_command(@dir.to_command(true)).should == 't'
+    it 'should start with a lower-case t when absolute' do
+      extract_command(@dir.to_command(true)).should == 'T'
     end
     it 'should have exactly 4 numerical parameters' do
       extract_coordinates(@dir.to_command).length.should == 4

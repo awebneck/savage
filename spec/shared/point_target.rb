@@ -18,17 +18,17 @@ share_as :PointTargetShared do
     lambda { dir_class.new 45 }.should raise_error
     lambda { dir_class.new 45, 50 }.should_not raise_error
   end
+  it 'should be relative if constructed with a false third parameter' do
+    direction = dir_class.new(45, 50, false)
+    direction.absolute?.should == false
+  end
   it 'should be absolute if constructed with a true third parameter' do
     direction = dir_class.new(45, 50, true)
     direction.absolute?.should == true
   end
-  it 'should not be absolute if constructed with a false third parameter' do
-    direction = dir_class.new(45, 50, false)
-    direction.absolute?.should == false
-  end
-  it 'should not be absolute if constructed with only two parameters' do
+  it 'should be absolute if constructed with only two parameters' do
     direction = dir_class.new(45, 45)
-    direction.absolute?.should == false
+    direction.absolute?.should == true
   end
   describe '#to_command' do
     it 'should have exactly 2 numerical parameters' do
