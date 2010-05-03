@@ -1,16 +1,88 @@
 = Savage
 
-A little gem for extracting and manipulating SVG vector path data.
+A little gem for extracting and manipulating SVG vector path data, Savage will make your life easier when it comes time to dynamically draw new and manipulate existing SVG paths. No more wacky regex to capture those cryptic path data strings; just pass the whole "d" attribute into Savage's parser, et voilá: You'll be given an instance of Savage::Path, replete with an array of subpaths split on the "move to" commands (to better help with those pesky winding issues). In turn, each subpath contains its own array of directions that can be swapped around, reconfigured, and otherwise manipulated to your heart's content in a truly human-readable way.
+
+== Usage
+
+<b>Parsing existing data</b>
+
+Easy-peasy Japanesey. Just take a look at the below:
+
+  path = Savage::Parser.parse my_path_data_string
+  path.subpaths # [subpath_1, subpath_2, ... subpath_n]
+  path.subpaths.last.directions # [direction_1, direction_2, ... direction_n]
+  
+Once extracted, you can manipulate, add, and remove the subpaths and directions as you see fit. See below for instructions on using the various direction types
+
+<b>Creating from scratch</b>
+
+What if you want to roll your own from the get-go? No problem:
+
+  path = Savage::Path.new do |p|
+    p.move_to 100, 200
+    p.line_to 300, 400
+    p.horizontal_to 500
+    p.close_path
+  end
+  
+We'll learn more about the actual drawing methods here shortly, but suffice it to say they are provided both as methods on the constructor block parameter for the sake of your visual organization, and the path itself after construction, as below:
+
+  path = Savage::Path.new
+  path.move_to 100, 200
+  path.line_to 300, 400
+  path.horizontal_to 500
+  path.close_path
+  
+<b>Drawing with Savage</b>
+
+So what are the different directions we can give our virtual pen? Here I'll refer you first to the SVG 1.1 specification by our friends down at the W3C, as they can describe all the specifics much better than I: http://www.w3.org/TR/SVG/paths.html#PathData. Each "command" listed in that section has an analog method on the Savage::SubPath class as well as the Savage::Path class (calling one of the methods on an instance of the Savage::Path class actually just delegates the call to the last SubPath in that path's selection of subpaths). Every parameter of these methods is expected to be a Numeric except where noted otherwise.  The methods are as follows:
+
+* <b>path.move_to(target_x, target_y)</b> - Move the 'pen' to the specified coordinates on the 'canvas' without drawing anything. Note that you can only call this method on a subpath if it's otherwise empty. Most of the time, just call this on an instance of the Path class, which will actually create a new subpath for you to continue drawing into
+* <b>path.close_path()</b> - Draw a straight line from the current position to the coordinates of the start of the current subpath
+* <b>path.line_to(target_x, target_y)</b> - Draw a straight line from the current position to the specified coordinates
+* <b>path.horizontal_to(target_x)</b> - Draw a straight horizontal line to the provided x coordinate
+* <b>path.vertical_to(target_y)</b> - Draw a straight vertical line to the provided y coordinate
+* <b>path.cubic_curve_to(control_1_x, control_1_y, control_2_x, control_2_y, target_x, target_y)</b> - Draw a cubic Bézier curve from the current position to the target coordinates (target_x/y) using the control points specified - see the SVG specification referred to above for more info
+* <b>path.cubic_curve_to(control_2_x, control_2_y, target_x, target_y)</b> - Shorthand cubic Bézier curve; assumes continuation of previous curve. See SVG specification
+* <b>path.quadratic_curve_to(control_x, control_y, target_x, target_y)</b> - Draw a quadratic Bézier curve from the current position to the target coordinates (target_x/y) using the control point specified - see the SVG specification referred to above for more info
+* <b>path.quadratic_curve_to(target_x, target_y)</b> - Shorthand quadratic Bézier curve; assumes continuation of previous curve. See SVG specification
+* <b>path.arc_to(radius_x,radius_y,rotation,large_arc_flag,sweep_flag,target_x,target_y)</b> - This is a doozy and complicated as sin to explain, so we'll let the W3C do it for us - see the spec. Otherwise, be aware that the large_arc_flag and sweep_flag arguments are expected to be boolean values, not Numeric.
+
+There you have it, pretty much right out of the book. One thing to keep in mind is that all of these methods use ABSOLUTE coordinates by default; if you want to use relative coordinates (based on the current position of the 'pen'), just pass false as the final argument to any of them:
+
+  path.line_to 100, 200, false
+  
+Each of these commands just creates a new instance of the appropriate subclass of the Savage::Direction class and pushes it onto the end of the directions list in question. Don't necessarily want to draw onto the end? Just create your own instance using the standard constructor and insert it wherever it butters your biscuit so to do:
+
+  direction = Savage::Directions::LineTo.new(100,200)
+  subpath.directions.insert(3,direction)
+
+Did you mess up before and need to change a directions coordinates after you drew it (or, more likely, after you parsed it out of some pre-existing data)? No problem:
+  
+  direction = Savage::Directions::LineTo.new(100,200)
+  direction.target.x = 234
+
+As you may have guessed, Savage::Path#subpaths and Savage::SubPath#directions are both just good old-fashioned arrays, so you can fiddle with them using all your favorite Enumerable tricks as always.
+
+<b>Turning it back into a path data string</b>
+
+Bang!:
+
+  path.to_command # 'M100 200-342 43.5Q-34.88 123.9 13-532' or whatever...
+
+Note that the #to_command method exists on Savage::Path, Savage::SubPath, and each subclass of Savage::Direction, so you can be as fine-grained with it as needed.
+
+== Issues / Feature Requests
+
+I have no doubt that will be some problems with this thing, as well as features missing that some of you fine folks might want. Please, please, please check Github's issue-tracking system to see if a ticket for the problem has already been submitted, or create a new one if not. I'll check the issues listed therein regularly, but you email me directly at your own risk (and by risk, I mean risk of not receiving a reply). :)
 
 == Note on Patches/Pull Requests
  
 * Fork the project.
-* Make your feature addition or bug fix.
-* Add specs for it. This is important so I don't break it in a
-  future version unintentionally. 
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+* Make your feature addition or bug fix. I very much prefer feature-specific branches.
+* Add specs for it. This is important so I don't break it in a future version unintentionally, which I can guarantee I will do.
+* Commit. Do not mess with rakefile, version, or history, please.
+* Send me a pull request - again, bonus points for topic branches.
 
 == Copyright
 
