@@ -68,7 +68,7 @@ As you may have guessed, Savage::Path#subpaths and Savage::SubPath#directions ar
 
 Bang!:
 
-  path.to_command # 'M100 200-342 43.5Q-34.88 123.9 13-532' or whatever...
+  path.to_command # => 'M100 200-342 43.5Q-34.88 123.9 13-532' or whatever...
 
 Note that the #to_command method exists on Savage::Path, Savage::SubPath, and each subclass of Savage::Direction, so you can be as fine-grained with it as needed.
 
