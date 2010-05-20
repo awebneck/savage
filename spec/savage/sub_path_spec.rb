@@ -64,6 +64,46 @@ describe SubPath do
     path2.directions[1].class.should == Directions::CubicCurveTo
     path2.directions[2].class.should == Directions::ArcTo
   end
+  describe '#quadratic_curve_to' do
+    it 'should raise an error if in short format and the previous command is of any type by QuadraticCurveTo' do
+      path = SubPath.new
+      lambda { path.quadratic_curve_to 500, 600 }.should raise_error
+      path = SubPath.new
+      path.move_to 233, 123
+      lambda { path.quadratic_curve_to 500, 600 }.should raise_error
+      path = SubPath.new
+      path.line_to 443, 265
+      lambda { path.quadratic_curve_to 500, 600 }.should raise_error
+      path = SubPath.new
+      path.cubic_curve_to 100,200,300,400,500,600
+      lambda { path.quadratic_curve_to 500, 600 }.should raise_error
+    end
+    it 'should not raise an error if in short format and the previous command is of type QuadraticCurveTo' do
+      path = SubPath.new
+      path.quadratic_curve_to 100,200,300,400
+      lambda { path.quadratic_curve_to 500, 600 }.should_not raise_error
+    end
+  end
+  describe '#cubic_curve_to' do
+    it 'should raise an error if in short format and the previous command is of any type by CubicCurveTo' do
+      path = SubPath.new
+      lambda { path.cubic_curve_to 500, 600, 700, 800 }.should raise_error
+      path = SubPath.new
+      path.move_to 233, 123
+      lambda { path.cubic_curve_to 500, 600, 700, 800 }.should raise_error
+      path = SubPath.new
+      path.line_to 443, 265
+      lambda { path.cubic_curve_to 500, 600, 700, 800 }.should raise_error
+      path = SubPath.new
+      path.quadratic_curve_to 100,200,300,400
+      lambda { path.cubic_curve_to 500, 600, 700, 800 }.should raise_error
+    end
+    it 'should not raise an error if in short format and the previous command is of type CubicCurveTo' do
+      path = SubPath.new
+      path.cubic_curve_to 100,200,300,400,500,600
+      lambda { path.cubic_curve_to 500, 600, 700, 800 }.should_not raise_error
+    end
+  end
   describe '#closed?' do
     it 'should be true if the last direction in the directions list is of type ClosePath' do
       path = SubPath.new

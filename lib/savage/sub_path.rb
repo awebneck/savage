@@ -5,6 +5,8 @@ module Savage
     
     define_proxies do |sym,const|
       define_method(sym) do |*args|
+        raise TypeError if const == "QuadraticCurveTo" && @directions.last.class != Directions::QuadraticCurveTo && [2,3].include?(args.length)
+        raise TypeError if const == "CubicCurveTo" && @directions.last.class != Directions::CubicCurveTo && [4,5].include?(args.length)
         (@directions << constantize("Savage::Directions::" << const).new(*args)).last
       end 
     end
