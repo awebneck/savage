@@ -170,5 +170,10 @@ describe Parser do
       path.subpaths[1].directions[1].target.x.should == -423
       path.subpaths[1].directions[1].target.y.should == 11.1
     end
+    it 'should generate the same string given to it (assuming float values are used), if not changed in the interim' do
+      path_string = "M100.0 200.0A255.0 12.0-123.0 1 0 23.0-93.4L100.0 200.0 300.0 400.0Q1.233-34.0 255.0 12.0T255.0 12.0H-342.65Z"
+      path = Parser.parse(path_string)
+      path.to_command.should == path_string
+    end
   end
 end
