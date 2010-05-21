@@ -25,7 +25,7 @@ What if you want to roll your own from the get-go? No problem:
     p.close_path
   end
   
-We'll learn more about the actual drawing methods here shortly, but suffice it to say they are provided both as methods on the constructor block parameter for the sake of your visual organization, and the path itself after construction, as below:
+We'll learn more about the actual drawing methods here shortly, but suffice it to say they are provided both as methods on the constructor block parameter for the sake of your visual organization, and the path itself after instantiation, as below:
 
   path = Savage::Path.new
   path.move_to 100, 200
