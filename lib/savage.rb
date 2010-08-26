@@ -1,3 +1,4 @@
+require 'activesupport'
 SAVAGE_PATH = File.dirname(__FILE__) + "/savage/"
 [
   'utils',
