@@ -129,7 +129,7 @@ module Savage
         
         def extract_coordinates(command_string)
           coordinates = []
-          command_string.scan(/-?(?:(?:\d+\.\d+)|\d+)/) do |match_group|
+          command_string.scan(/-?\d+(\.\d+)?/) do |match_group|
             coordinates << $&.to_f
           end
           coordinates
