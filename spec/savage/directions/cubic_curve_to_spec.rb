@@ -6,13 +6,14 @@ describe CubicCurveTo do
   def dir_class; CubicCurveTo; end
   def create_relative; CubicCurveTo.new(100,200,300,400,500,600,false); end
   def command_code; 'c'; end
-  
+
   before :each do
     @dir = dir_class.new(100,200,300,400,500,600)
   end
-  
+
+  include Command
   include DirectionShared
-  
+
   it 'should have a target' do
     @dir.respond_to?(:target).should == true
     @dir.target.class.should == Point

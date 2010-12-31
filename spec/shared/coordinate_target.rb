@@ -2,6 +2,7 @@ share_as :CoordinateTargetShared do
   before :each do
     @dir = dir_class.new(100)
   end
+  include Command
   include DirectionShared
   it 'should have an accessible target, based on the constructor argument' do
     @dir.respond_to?(:target).should == true

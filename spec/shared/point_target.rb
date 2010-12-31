@@ -2,6 +2,7 @@ share_as :PointTargetShared do
   before :each do
     @dir = dir_class.new(100,200)
   end
+  include Command
   include DirectionShared
   it 'should have a target' do
     @dir.respond_to?(:target).should == true

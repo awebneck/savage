@@ -90,7 +90,7 @@ I have no doubt that will be some problems with this thing, as well as features 
 
 == Contributors
 
-* Jeremy Holland (jeremy@jeremypholland.com, github:therubyneck) -- author
+* Jeremy Holland (jeremy@jeremypholland.com, github:awebneck) -- author
 * Christoffer Klang (toffeklang@yahoo.se, github:christoffer) -- regexp improvements
 
 == Copyright
