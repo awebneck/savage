@@ -8,6 +8,7 @@ describe ClosePath do
   end
   def create_relative; ClosePath.new(false); end
   def command_code; 'z'; end
+  include Command
   include DirectionShared
   it 'should be constructed with with either no parameters or a single boolean parameter' do
     lambda { ClosePath.new }.should_not raise_error

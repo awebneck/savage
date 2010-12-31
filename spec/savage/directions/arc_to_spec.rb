@@ -6,13 +6,14 @@ describe ArcTo do
   def dir_class; ArcTo; end
   def create_relative; ArcTo.new(100,200,300,true,false,400,500,false); end
   def command_code; 'a'; end
-  
+
   before :each do
     @dir = dir_class.new(100,200,300,true,false,400,500)
   end
-  
+
+  include Command
   include DirectionShared
-  
+
   it 'should have a target' do
     @dir.respond_to?(:target).should == true
     @dir.target.class.should == Point

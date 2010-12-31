@@ -6,13 +6,14 @@ describe QuadraticCurveTo do
   def dir_class; QuadraticCurveTo; end
   def create_relative; QuadraticCurveTo.new(100,200,300,400,false); end
   def command_code; 'q'; end
-  
+
   before :each do
     @dir = dir_class.new(100,200,300,400)
   end
-  
+
+  include Command
   include DirectionShared
-  
+
   it 'should have a target' do
     @dir.respond_to?(:target).should == true
     @dir.target.class.should == Point
