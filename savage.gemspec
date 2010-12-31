@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    ".rspec",
     "LICENSE",
     "README.rdoc",
     "Rakefile",
