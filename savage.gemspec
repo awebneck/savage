@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeremy Holland"]
-  s.date = %q{2010-12-30}
+  s.date = %q{2011-07-21}
   s.description = %q{A little gem for extracting and manipulating SVG vector path data.}
   s.email = %q{jeremy@jeremypholland.com}
   s.extra_rdoc_files = [
@@ -62,31 +62,10 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/awebneck/savage}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{A little library to manipulate SVG path data}
-  s.test_files = [
-    "spec/savage/directions/arc_to_spec.rb",
-    "spec/savage/directions/close_path_spec.rb",
-    "spec/savage/directions/cubic_curve_to_spec.rb",
-    "spec/savage/directions/horizontal_to_spec.rb",
-    "spec/savage/directions/line_to_spec.rb",
-    "spec/savage/directions/move_to_spec.rb",
-    "spec/savage/directions/point_spec.rb",
-    "spec/savage/directions/quadratic_curve_spec.rb",
-    "spec/savage/directions/vertical_to_spec.rb",
-    "spec/savage/parser_spec.rb",
-    "spec/savage/path_spec.rb",
-    "spec/savage/sub_path_spec.rb",
-    "spec/savage_spec.rb",
-    "spec/shared/command.rb",
-    "spec/shared/coordinate_target.rb",
-    "spec/shared/direction.rb",
-    "spec/shared/point_target.rb",
-    "spec/spec_helper.rb"
-  ]
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
