@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{savage}
-  s.version = "1.1.2"
+  s.name = "savage"
+  s.version = "1.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeremy Holland"]
-  s.date = %q{2011-07-21}
-  s.description = %q{A little gem for extracting and manipulating SVG vector path data.}
-  s.email = %q{jeremy@jeremypholland.com}
+  s.date = "2011-12-02"
+  s.description = "A little gem for extracting and manipulating SVG vector path data."
+  s.email = "jeremy@jeremypholland.com"
   s.extra_rdoc_files = [
     "LICENSE",
     "README.rdoc"
@@ -60,10 +60,10 @@ Gem::Specification.new do |s|
     "spec/shared/point_target.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/awebneck/savage}
+  s.homepage = "http://github.com/awebneck/savage"
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{A little library to manipulate SVG path data}
+  s.rubygems_version = "1.8.10"
+  s.summary = "A little library to manipulate SVG path data"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
