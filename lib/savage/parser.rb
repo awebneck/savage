@@ -47,84 +47,82 @@ module Savage
         end
         
         def build_direction(parsable)
-          direction = nil
-          implicit_directions = false
+          directions = []
           coordinates = extract_coordinates parsable
           absolute = (parsable[0,1] == parsable[0,1].upcase) ? true : false
           recurse_code = parsable[0,1]
-          case recurse_code
-          when /[Mm]/
-            x = coordinates.shift
-            y = coordinates.shift
-            raise TypeError if x.nil? || y.nil?
-            direction = Directions::MoveTo.new(x,y,absolute)
-            recurse_code = 'L'
-          when /[Ll]/
-            x = coordinates.shift
-            y = coordinates.shift
-            raise TypeError if x.nil? || y.nil?
-            direction = Directions::LineTo.new(x,y,absolute)
-          when /[Hh]/
-            target = coordinates.shift
-            raise TypeError if target.nil?
-            direction = Directions::HorizontalTo.new(target,absolute)
-          when /[Vv]/
-            target = coordinates.shift
-            raise TypeError if target.nil?
-            direction = Directions::VerticalTo.new(target,absolute)
-          when /[Cc]/
-            control_1_x = coordinates.shift
-            control_1_y = coordinates.shift
-            control_2_x = coordinates.shift
-            control_2_y = coordinates.shift
-            x = coordinates.shift
-            y = coordinates.shift
-            raise TypeError if x.nil? || y.nil? || control_1_x.nil? || control_1_y.nil? || control_2_x.nil? || control_2_y.nil?
-            direction = Directions::CubicCurveTo.new(control_1_x,control_1_y,control_2_x,control_2_y,x,y,absolute)
-          when /[Ss]/
-            control_2_x = coordinates.shift
-            control_2_y = coordinates.shift
-            x = coordinates.shift
-            y = coordinates.shift
-            raise TypeError if x.nil? || y.nil? || control_2_x.nil? || control_2_y.nil?
-            direction = Directions::CubicCurveTo.new(control_2_x,control_2_y,x,y,absolute)
-          when /[Qq]/
-            control_x = coordinates.shift
-            control_y = coordinates.shift
-            x = coordinates.shift
-            y = coordinates.shift
-            raise TypeError if x.nil? || y.nil? || control_x.nil? || control_y.nil?
-            direction = Directions::QuadraticCurveTo.new(control_x,control_y,x,y,absolute)
-          when /[Tt]/
-            x = coordinates.shift
-            y = coordinates.shift
-            raise TypeError if x.nil? || y.nil?
-            direction = Directions::QuadraticCurveTo.new(x,y,absolute)
-          when /[Aa]/
-            rx = coordinates.shift
-            ry = coordinates.shift
-            rotation = coordinates.shift
-            large_arc = (coordinates.shift > 0) ? true : false
-            sweep = (coordinates.shift > 0) ? true : false
-            x = coordinates.shift
-            y = coordinates.shift
-            raise TypeError if x.nil? || y.nil? || rx.nil? || ry.nil? || rotation.nil?
-            direction = Directions::ArcTo.new(rx,ry,rotation,large_arc,sweep,x,y,absolute)
-          when /[Zz]/
-            direction = Directions::ClosePath.new(absolute)
-          when /[^MmLlHhVvCcSsQqTtAaZz]/
-            coordinates = []
-            raise TypeError
+          
+          # we need to handle this separately, since ClosePath doesn't take any coordinates
+          if coordinates.empty? && recurse_code =~ /[Zz]/
+            directions << Directions::ClosePath.new(absolute)
           end
-          unless coordinates.empty?
-            recursed_direction = build_direction(coordinates.join(' ').insert(0,recurse_code))
-            if recursed_direction.kind_of?(Array)
-              direction = [direction].concat recursed_direction
-            else
-              direction = [direction,recursed_direction]
+          
+          until coordinates.empty?
+            case recurse_code
+            when /[Mm]/
+              x = coordinates.shift
+              y = coordinates.shift
+              raise TypeError if x.nil? || y.nil?
+              directions << Directions::MoveTo.new(x,y,absolute)
+              recurse_code = 'L'
+            when /[Ll]/
+              x = coordinates.shift
+              y = coordinates.shift
+              raise TypeError if x.nil? || y.nil?
+              directions << Directions::LineTo.new(x,y,absolute)
+            when /[Hh]/
+              target = coordinates.shift
+              raise TypeError if target.nil?
+              directions << Directions::HorizontalTo.new(target,absolute)
+            when /[Vv]/
+              target = coordinates.shift
+              raise TypeError if target.nil?
+              directions << Directions::VerticalTo.new(target,absolute)
+            when /[Cc]/
+              control_1_x = coordinates.shift
+              control_1_y = coordinates.shift
+              control_2_x = coordinates.shift
+              control_2_y = coordinates.shift
+              x = coordinates.shift
+              y = coordinates.shift
+              raise TypeError if x.nil? || y.nil? || control_1_x.nil? || control_1_y.nil? || control_2_x.nil? || control_2_y.nil?
+              directions << Directions::CubicCurveTo.new(control_1_x,control_1_y,control_2_x,control_2_y,x,y,absolute)
+            when /[Ss]/
+              control_2_x = coordinates.shift
+              control_2_y = coordinates.shift
+              x = coordinates.shift
+              y = coordinates.shift
+              raise TypeError if x.nil? || y.nil? || control_2_x.nil? || control_2_y.nil?
+              directions << Directions::CubicCurveTo.new(control_2_x,control_2_y,x,y,absolute)
+            when /[Qq]/
+              control_x = coordinates.shift
+              control_y = coordinates.shift
+              x = coordinates.shift
+              y = coordinates.shift
+              raise TypeError if x.nil? || y.nil? || control_x.nil? || control_y.nil?
+              directions << Directions::QuadraticCurveTo.new(control_x,control_y,x,y,absolute)
+            when /[Tt]/
+              x = coordinates.shift
+              y = coordinates.shift
+              raise TypeError if x.nil? || y.nil?
+              directions << Directions::QuadraticCurveTo.new(x,y,absolute)
+            when /[Aa]/
+              rx = coordinates.shift
+              ry = coordinates.shift
+              rotation = coordinates.shift
+              large_arc = (coordinates.shift > 0) ? true : false
+              sweep = (coordinates.shift > 0) ? true : false
+              x = coordinates.shift
+              y = coordinates.shift
+              raise TypeError if x.nil? || y.nil? || rx.nil? || ry.nil? || rotation.nil?
+              directions << Directions::ArcTo.new(rx,ry,rotation,large_arc,sweep,x,y,absolute)
+            when /[^MmLlHhVvCcSsQqTtAaZz]/
+              coordinates = []
+              raise TypeError
             end
           end
-          direction
+          
+          directions
         end
         
         def extract_coordinates(command_string)
