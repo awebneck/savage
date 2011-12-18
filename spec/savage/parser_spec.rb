@@ -194,7 +194,7 @@ describe Parser do
 		
 		it "should support scienfitic notation in paths (eg. 2e-5)" do
 			# this is a 100x100 square
-			path = Parser.parse "M 0,0 L 1e2,0 100,1000e-1 L 0,100"
+			path = Parser.parse "M 0,0 L 1e2,0 100,1000e-1 L 0,10e+1"
 			points = path.directions.map{|d| [d.target.x, d.target.y] }
 			points.should == [[0.0, 0.0], [100.0, 0.0], [100.0, 100.0], [0.0, 100.0]]
 		end
