@@ -11,7 +11,6 @@ begin
     gem.homepage = "http://github.com/awebneck/savage"
     gem.authors = ["Jeremy Holland"]
     gem.add_development_dependency "rspec", ">= 2.3.0"
-    gem.add_dependency "activesupport", ">= 2.3.5"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

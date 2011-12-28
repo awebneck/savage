@@ -92,7 +92,7 @@ I have no doubt that will be some problems with this thing, as well as features 
 
 * Jeremy Holland (jeremy@jeremypholland.com, github:awebneck) -- author
 * Christoffer Klang (toffeklang@yahoo.se, github:christoffer) -- regexp improvements
-* MatmaRex (github:MatmaRex) -- parser improvements and scientific notation support
+* MatmaRex (github:MatmaRex) -- parser improvements, scientific notation support, bug fixes
 
 == Copyright
 

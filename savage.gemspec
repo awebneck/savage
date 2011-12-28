@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "savage"
-  s.version = "1.1.4"
+  s.version = "1.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeremy Holland"]
-  s.date = "2011-12-02"
+  s.date = "2011-12-28"
   s.description = "A little gem for extracting and manipulating SVG vector path data."
   s.email = "jeremy@jeremypholland.com"
   s.extra_rdoc_files = [
@@ -70,14 +70,11 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 2.3.0"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.5"])
     else
       s.add_dependency(%q<rspec>, [">= 2.3.0"])
-      s.add_dependency(%q<activesupport>, [">= 2.3.5"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 2.3.0"])
-    s.add_dependency(%q<activesupport>, [">= 2.3.5"])
   end
 end
 
