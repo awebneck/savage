@@ -18,7 +18,7 @@ module Savage
           subpaths = []
           if move_index = parsable.index(/[Mm]/)
             subpaths << parsable[0...move_index] if move_index > 0
-            parsable.scan /[Mm](?:\d|[eE.,-]|[LlHhVvQqCcTtSsAaZz]|\W)+/m do |match_group|
+            parsable.scan /[Mm](?:\d|[eE.,+-]|[LlHhVvQqCcTtSsAaZz]|\W)+/m do |match_group|
               subpaths << $&
             end
           else
@@ -35,7 +35,7 @@ module Savage
         
         def extract_directions(parsable)
           directions = []
-          parsable.scan /[MmLlHhVvQqCcTtSsAaZz](?:\d|[eE.,-]|\W)*/m do |match_group|
+          parsable.scan /[MmLlHhVvQqCcTtSsAaZz](?:\d|[eE.,+-]|\W)*/m do |match_group|
             direction = build_direction $&
             if direction.kind_of?(Array)
               directions.concat direction
@@ -127,7 +127,7 @@ module Savage
         
         def extract_coordinates(command_string)
           coordinates = []
-          command_string.scan(/-?\d+(\.\d+)?([eE]-?\d+)?/) do |match_group|
+          command_string.scan(/-?\d+(\.\d+)?([eE][+-]?\d+)?/) do |match_group|
             coordinates << $&.to_f
           end
           coordinates
