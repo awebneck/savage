@@ -7,7 +7,7 @@ module Savage
       define_method(sym) do |*args|
         raise TypeError if const == "QuadraticCurveTo" && @directions.last.class != Directions::QuadraticCurveTo && [2,3].include?(args.length)
         raise TypeError if const == "CubicCurveTo" && @directions.last.class != Directions::CubicCurveTo && [4,5].include?(args.length)
-        (@directions << ("Savage::Directions::" << const).constantize.new(*args)).last
+        (@directions << Savage::Directions.const_get(const).new(*args)).last
       end
     end
 
