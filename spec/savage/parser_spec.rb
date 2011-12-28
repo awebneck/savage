@@ -19,7 +19,7 @@ describe Parser do
       path.subpaths.last.directions.length.should == 1
       path.subpaths.last.directions.last.class.should == Directions::MoveTo
     end
-    
+
     it 'should handle comma separated coordinates' do
       path = Parser.parse("M100,200")
       path.class.should == Path
@@ -27,7 +27,7 @@ describe Parser do
       path.subpaths.last.directions.length.should == 1
       path.subpaths.last.directions.last.class.should == Directions::MoveTo
     end
-    
+
     it 'should return a path object with one subpath containing a move_to and a line_to when the string is a move_to command followed by a line_to command' do
       path = Parser.parse("M100 200l-342.65 21")
       path.class.should == Path
@@ -108,7 +108,7 @@ describe Parser do
       path.subpaths.last.directions[2].class.should == Directions::ClosePath
       path.subpaths.last.closed?.should == true
     end
-    
+
     it 'should return a path object with one subpath containing two line_to directions when the string is a line_to command followed by implicit coordinates' do
       path = Parser.parse("L100 200 300 400")
       path.class.should == Path
@@ -183,20 +183,20 @@ describe Parser do
       path = Parser.parse(path_string)
       path.to_command.should == path_string
     end
-    
+
     it "should be able to parse complex paths" do
-      path = Parser.parse("M74.89,146.249c0.042,0.552,0.376,0.685,0.744,0.293m50.543-9.1323c15.445-16.43,32.782-32.859,49.793-49.289		c-6.298,0.001-12.595,0.001-18.893,0c-10.813,10.37-21.759,20.737-32.275,31.107C74.249,134.323,74.424,140.285,74.89,146.249z")
+      path = Parser.parse("M74.89,146.249c0.042,0.552,0.376,0.685,0.744,0.293m50.543-9.1323c15.445-16.43,32.782-32.859,49.793-49.289    c-6.298,0.001-12.595,0.001-18.893,0c-10.813,10.37-21.759,20.737-32.275,31.107C74.249,134.323,74.424,140.285,74.89,146.249z")
       path.class.should == Path
       path.subpaths.length.should == 2
       path.subpaths[0].directions.length.should == 2
       path.subpaths[1].directions.length.should == 6
     end
-		
-		it "should support scienfitic notation in paths (eg. 2e-5)" do
-			# this is a 100x100 square
-			path = Parser.parse "M 0,0 L 1e2,0 100,1000e-1 L 0,10e+1"
-			points = path.directions.map{|d| [d.target.x, d.target.y] }
-			points.should == [[0.0, 0.0], [100.0, 0.0], [100.0, 100.0], [0.0, 100.0]]
-		end
+
+    it "should support scientific notation in paths (eg. 2e-5)" do
+      # this is a 100x100 square
+      path = Parser.parse "M 0,0 L 1e2,0 100,1000e-1 L 0,10e+1"
+      points = path.directions.map{|d| [d.target.x, d.target.y] }
+      points.should == [[0.0, 0.0], [100.0, 0.0], [100.0, 100.0], [0.0, 100.0]]
+    end
   end
 end
