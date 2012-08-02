@@ -7,8 +7,8 @@ module Savage
         raise TypeError if (subpaths.empty?)
         path = Path.new
         path.subpaths = []
-        subpaths.each do |subpath|
-          path.subpaths << parse_subpath(subpath)
+        subpaths.each_with_index do |subpath, i|
+          path.subpaths << parse_subpath(subpath, i == 0)
         end
         path
       end
@@ -27,29 +27,31 @@ module Savage
           subpaths
         end
         
-        def parse_subpath(parsable)
+        def parse_subpath(parsable, force_absolute=false)
           subpath = SubPath.new
-          subpath.directions = extract_directions parsable
+          subpath.directions = extract_directions parsable, force_absolute
           subpath
         end
         
-        def extract_directions(parsable)
+        def extract_directions(parsable, force_absolute=false)
           directions = []
+          i = 0
           parsable.scan /[MmLlHhVvQqCcTtSsAaZz](?:\d|[eE.,+-]|\W)*/m do |match_group|
-            direction = build_direction $&
+            direction = build_direction $&, force_absolute && i == 0
             if direction.kind_of?(Array)
               directions.concat direction
             else
               directions << direction
             end
+            i += 1
           end
           directions
         end
         
-        def build_direction(parsable)
+        def build_direction(parsable, force_absolute=false)
           directions = []
           coordinates = extract_coordinates parsable
-          absolute = (parsable[0,1] == parsable[0,1].upcase) ? true : false
+          absolute = (force_absolute || parsable[0,1] == parsable[0,1].upcase) ? true : false
           recurse_code = parsable[0,1]
           
           # we need to handle this separately, since ClosePath doesn't take any coordinates
