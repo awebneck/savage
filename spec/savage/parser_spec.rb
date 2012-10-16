@@ -165,37 +165,63 @@ describe Parser do
       path.subpaths.last.directions[1].target.y.should == 400
     end
 
-    it 'should return a path object with one subpath containing a move_to and two line_to directions when the string is a move_to command followed by more than one set of implicit coordinates' do
+    it 'should return a path object with one subpath containing an absolute move_to and two absolute line_to directions when the string is an absolute move_to command followed by more than one set of implicit coordinates' do
       path = Parser.parse("M100 200 300 400 500 600 ")
       path.class.should == Path
       path.subpaths.length.should == 1
       path.subpaths.last.directions.length.should == 3
       path.subpaths.last.directions[0].class.should == Directions::MoveTo
+      path.subpaths.last.directions[0].should be_absolute
       path.subpaths.last.directions[0].target.x.should == 100
       path.subpaths.last.directions[0].target.y.should == 200
       path.subpaths.last.directions[1].class.should == Directions::LineTo
+      path.subpaths.last.directions[1].should be_absolute
       path.subpaths.last.directions[1].target.x.should == 300
       path.subpaths.last.directions[1].target.y.should == 400
       path.subpaths.last.directions[2].class.should == Directions::LineTo
+      path.subpaths.last.directions[2].should be_absolute
+      path.subpaths.last.directions[2].target.x.should == 500
+      path.subpaths.last.directions[2].target.y.should == 600
+    end
+
+    it 'should return a path object with one subpath containing an absolute move_to and two relative line_to directions when the string is a relative move_to command followed by more than one set of implicit coordinates' do
+      path = Parser.parse("m100 200 300 400 500 600 ")
+      path.class.should == Path
+      path.subpaths.length.should == 1
+      path.subpaths.last.directions.length.should == 3
+      path.subpaths.last.directions[0].class.should == Directions::MoveTo
+      path.subpaths.last.directions[0].should be_absolute
+      path.subpaths.last.directions[0].target.x.should == 100
+      path.subpaths.last.directions[0].target.y.should == 200
+      path.subpaths.last.directions[1].class.should == Directions::LineTo
+      path.subpaths.last.directions[1].should_not be_absolute
+      path.subpaths.last.directions[1].target.x.should == 300
+      path.subpaths.last.directions[1].target.y.should == 400
+      path.subpaths.last.directions[2].class.should == Directions::LineTo
+      path.subpaths.last.directions[2].should_not be_absolute
       path.subpaths.last.directions[2].target.x.should == 500
       path.subpaths.last.directions[2].target.y.should == 600
     end
 
     it 'should return a path object with two subpaths containing one line_to directions each when the string is two move_to commands each followed by a line_to command' do
-      path = Parser.parse("M100 200 332 -12.3M594 230-423 11.1")
+      path = Parser.parse("M100 200 332 -12.3m594 230-423 11.1")
       path.class.should == Path
       path.subpaths.length.should == 2
       path.subpaths[0].directions.length.should == 2
       path.subpaths[0].directions[0].class.should == Directions::MoveTo
+      path.subpaths[0].directions[0].should be_absolute
       path.subpaths[0].directions[0].target.x.should == 100
       path.subpaths[0].directions[0].target.y.should == 200
       path.subpaths[0].directions[1].class.should == Directions::LineTo
+      path.subpaths[0].directions[1].should be_absolute
       path.subpaths[0].directions[1].target.x.should == 332
       path.subpaths[0].directions[1].target.y.should == -12.3
       path.subpaths[1].directions[0].class.should == Directions::MoveTo
+      path.subpaths[1].directions[0].should_not be_absolute
       path.subpaths[1].directions[0].target.x.should == 594
       path.subpaths[1].directions[0].target.y.should == 230
       path.subpaths[1].directions[1].class.should == Directions::LineTo
+      path.subpaths[1].directions[1].should_not be_absolute
       path.subpaths[1].directions[1].target.x.should == -423
       path.subpaths[1].directions[1].target.y.should == 11.1
     end
