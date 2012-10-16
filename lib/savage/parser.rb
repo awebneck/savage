@@ -18,7 +18,7 @@ module Savage
           subpaths = []
           if move_index = parsable.index(/[Mm]/)
             subpaths << parsable[0...move_index] if move_index > 0
-            parsable.scan /[Mm](?:\d|[eE.,+-]|[LlHhVvQqCcTtSsAaZz]|\W)+/m do |match_group|
+            parsable.scan(/[Mm](?:\d|[eE.,+-]|[LlHhVvQqCcTtSsAaZz]|\W)+/m) do |match_group|
               subpaths << $&
             end
           else
@@ -36,7 +36,7 @@ module Savage
         def extract_directions(parsable, force_absolute=false)
           directions = []
           i = 0
-          parsable.scan /[MmLlHhVvQqCcTtSsAaZz](?:\d|[eE.,+-]|\W)*/m do |match_group|
+          parsable.scan(/[MmLlHhVvQqCcTtSsAaZz](?:\d|[eE.,+-]|\W)*/m) do |match_group|
             direction = build_direction $&, force_absolute && i == 0
             if direction.kind_of?(Array)
               directions.concat direction
@@ -51,15 +51,16 @@ module Savage
         def build_direction(parsable, force_absolute=false)
           directions = []
           coordinates = extract_coordinates parsable
-          absolute = (force_absolute || parsable[0,1] == parsable[0,1].upcase) ? true : false
           recurse_code = parsable[0,1]
+          first_absolute = force_absolute
           
           # we need to handle this separately, since ClosePath doesn't take any coordinates
           if coordinates.empty? && recurse_code =~ /[Zz]/
-            directions << Directions::ClosePath.new(absolute)
+            directions << Directions::ClosePath.new(parsable[0,1] == parsable[0,1].upcase)
           end
           
           until coordinates.empty?
+            absolute = (first_absolute || parsable[0,1] == parsable[0,1].upcase)
             case recurse_code
             when /[Mm]/
               x = coordinates.shift
@@ -122,6 +123,7 @@ module Savage
               coordinates = []
               raise TypeError
             end
+            first_absolute = false
           end
           
           directions
