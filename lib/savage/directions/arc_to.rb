@@ -7,8 +7,8 @@ module Savage
         super(target_x, target_y, absolute)
         @radius = Point.new(radius_x, radius_y)
         @rotation = rotation
-        @large_arc = large_arc
-        @sweep = sweep
+        @large_arc = large_arc.is_a?(Numeric) ? large_arc > 0 : large_arc
+        @sweep = sweep.is_a?(Numeric) ? sweep > 0 : sweep
       end
     
       def to_command
