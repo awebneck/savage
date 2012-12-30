@@ -2,17 +2,22 @@ module Savage
   module Directions
     Point = Struct.new :x, :y
   end
-  
+
   class Direction
-    
+
     include Utils
-    
+
     def initialize(absolute)
       @absolute = absolute
     end
-    
+
     def absolute?
       @absolute
+    end
+
+    def to_command
+      arr = to_a
+      arr[0] + arr[1..-1].join(' ').gsub(/ -/,'-')
     end
   end
 end
