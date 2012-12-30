@@ -1,4 +1,4 @@
-share_as :DirectionShared do
+shared_examples "Direction" do
   include Command
   it 'should have a to_command method' do
     @dir.respond_to?(:to_command).should == true

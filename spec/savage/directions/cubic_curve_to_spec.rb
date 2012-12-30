@@ -12,7 +12,7 @@ describe CubicCurveTo do
   end
 
   include Command
-  include DirectionShared
+  it_behaves_like 'Direction'
 
   it 'should have a target' do
     @dir.respond_to?(:target).should == true
