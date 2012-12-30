@@ -9,7 +9,7 @@ describe ClosePath do
   def create_relative; ClosePath.new(false); end
   def command_code; 'z'; end
   include Command
-  include DirectionShared
+  it_behaves_like 'Direction'
   it 'should be constructed with with either no parameters or a single boolean parameter' do
     lambda { ClosePath.new }.should_not raise_error
     lambda { ClosePath.new true }.should_not raise_error

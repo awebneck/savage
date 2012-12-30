@@ -6,5 +6,5 @@ describe HorizontalTo do
   def dir_class; HorizontalTo; end
   def create_relative; HorizontalTo.new(100,false); end
   def command_code; 'h'; end
-  include CoordinateTargetShared
+  it_behaves_like 'CoordinateTarget'
 end
