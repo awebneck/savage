@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "savage"
-  s.version = "1.1.7"
+  s.version = "1.1.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeremy Holland"]
-  s.date = "2012-10-16"
+  s.date = "2013-01-03"
   s.description = "A little gem for extracting and manipulating SVG vector path data."
   s.email = "jeremy@jeremypholland.com"
   s.extra_rdoc_files = [
