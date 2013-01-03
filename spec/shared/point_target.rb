@@ -1,9 +1,9 @@
-share_as :PointTargetShared do
+shared_examples_for 'PointTarget' do
   before :each do
     @dir = dir_class.new(100,200)
   end
   include Command
-  include DirectionShared
+  it_behaves_like 'Direction'
   it 'should have a target' do
     @dir.respond_to?(:target).should == true
     @dir.target.class.should == Point

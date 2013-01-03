@@ -6,5 +6,5 @@ describe LineTo do
   def dir_class; LineTo; end
   def create_relative; LineTo.new(100,200,false); end
   def command_code; 'l'; end
-  include PointTargetShared
+  it_behaves_like 'PointTarget'
 end
