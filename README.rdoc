@@ -4,7 +4,7 @@ A little gem for extracting and manipulating SVG vector path data, Savage will m
 
 == Latest Update
 
-Version 1.1.0 adds support for Rails 3 and Ruby 1.9.2. Enjoy!
+Version 1.1.8 includes some spec fixes and avoidance of deprecation warnings, courtesy of {bdon}[https://github.com/bdon]!
 
 == Usage
 
@@ -90,10 +90,10 @@ I have no doubt that will be some problems with this thing, as well as features 
 
 == Contributors
 
-* Jeremy Holland (jeremy@jeremypholland.com, github:awebneck) -- author
-* Christoffer Klang (toffeklang@yahoo.se, github:christoffer) -- regexp improvements
-* MatmaRex (github:MatmaRex) -- parser improvements, scientific notation support, bug fixes
-* Brandon Liu (github:bdon) -- spec improvements
+* Jeremy Holland (jeremy@jeremypholland.com, github:{awebneck}[https://github.com/awebneck]) -- author
+* Christoffer Klang (toffeklang@yahoo.se, github:{christoffer}[https://github.com/christoffer]) -- regexp improvements
+* Bartosz Dz (github:{MatmaRex}[https://github.com/matmarex]) -- parser improvements, scientific notation support, bug fixes
+* Brandon Liu (github:{bdon}[https://github.com/bdon]) -- spec improvements
 
 == Copyright
 
