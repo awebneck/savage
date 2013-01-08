@@ -22,7 +22,7 @@ describe Path do
     path.subpaths.last.directions[1].class.should == Directions::LineTo
     path.subpaths.last.directions[2].class.should == Directions::CubicCurveTo
     path.subpaths.last.directions[3].class.should == Directions::ArcTo
-    
+
     path2 = Path.new do |p|
       p.line_to 300, 400
       p.cubic_curve_to 500,600,700,800,900,1000
