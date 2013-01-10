@@ -2,7 +2,7 @@ module Savage
   module Directions
     class CubicCurveTo < QuadraticCurveTo
       attr_accessor :control_1
-    
+
       def initialize(*args)
         raise ArgumentError if args.length < 4
         case args.length
@@ -19,14 +19,18 @@ module Savage
           super(args[2],args[3],args[4],args[5],args[6])
         end
       end
-    
-      def to_command
-        command_code << ((@control_1) ? "#{@control_1.x} #{@control_1.y} #{@control.x} #{@control.y} #{@target.x} #{@target.y}".gsub(/ -/,'-') : super().gsub(/[A-Za-z]/,''))
+
+      def to_a
+        if @control_1
+          [command_code, @control_1.x, @control_1.y, @control.x, @control.y, @target.x, @target.y]
+        else
+          [command_code, @control.x, @control.y, @target.x, @target.y]
+        end
       end
-    
+
       def control_2; @control; end
       def control_2=(value); @control = value; end
-  
+
       def command_code
         return (absolute?) ? 'C' : 'c' if @control_1
         (absolute?) ? 'S' : 's'
