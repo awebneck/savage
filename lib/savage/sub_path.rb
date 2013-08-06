@@ -2,6 +2,7 @@ module Savage
   class SubPath
     include Utils
     include DirectionProxy
+    include Transformable
 
     define_proxies do |sym,const|
       define_method(sym) do |*args|
@@ -44,6 +45,10 @@ module Savage
 
     def closed?
       @directions.last.kind_of? Directions::ClosePath
+    end
+
+    def transform(*args)
+      directions.each { |dir| dir.transform *args }
     end
   end
 end

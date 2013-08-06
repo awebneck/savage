@@ -10,7 +10,7 @@ module Savage
       end
 
       def to_a
-        [command_code, @target.to_s]
+        [command_code, @target]
       end
     end
   end

@@ -32,6 +32,13 @@ module Savage
         return (absolute?) ? 'Q' : 'q' if @control
         (absolute?) ? 'T' : 't'
       end
+
+      def transform(scale_x, skew_x, skew_y, scale_y, tx, ty)
+        # relative line_to dont't need to be tranlated
+        tx = ty = 0 if relative?
+        transform_dot( target,  scale_x, skew_x, skew_y, scale_y, tx, ty)
+        transform_dot( control, scale_x, skew_x, skew_y, scale_y, tx, ty)
+      end
     end
   end
 end

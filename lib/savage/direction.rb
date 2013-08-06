@@ -6,6 +6,7 @@ module Savage
   class Direction
 
     include Utils
+    include Transformable
 
     def initialize(absolute)
       @absolute = absolute
@@ -15,8 +16,15 @@ module Savage
       @absolute
     end
 
+    def relative?
+      !absolute?
+    end
+
     def to_command
       arr = to_a
+      arr.map! do |x|
+        x.to_i == x ? x.to_i : x
+      end
       arr[0] + arr[1..-1].join(' ').gsub(/ -/,'-')
     end
   end
