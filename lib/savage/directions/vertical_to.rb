@@ -11,8 +11,8 @@ module Savage
           raise 'rotating or skewing (in X axis) an "vertical_to" direction is not supported yet.'
         end
         
-        target *= scale_y
-        target += ty if absolute?
+        self.target *= scale_y
+        self.target += ty if absolute?
       end
     end
   end
