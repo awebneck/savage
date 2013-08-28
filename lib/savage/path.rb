@@ -5,6 +5,7 @@ module Savage
 
     include Utils
     include DirectionProxy
+    include Transformable
 
     attr_accessor :subpaths
 
@@ -40,6 +41,10 @@ module Savage
 
     def to_command
       @subpaths.collect { |subpath| subpath.to_command }.join
+    end
+
+    def transform(*args)
+      @subpaths.each {|subpath| subpath.transform *args }
     end
   end
 end
