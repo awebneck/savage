@@ -11,12 +11,20 @@ describe Transformable do
   end
 
   describe Path do
+    it 'can transform' do
+      path = Parser.parse %Q{C211.003,239.997,253.003,197.997,304.003,197.997}
+      path.scale( 0.5, -0.5 )
+      path.translate( 0, 100 )
+      path.to_command.should == "C105.5015-19.9985 126.5015 1.0015 152.0015 1.0015"
+    end
+
     it 'should transfrom subpaths recursively' do
       path = Parser.parse('M 0 100 L 100 200 L 200 200 H 30 M 0 100 Z')
       path.translate( 100, -135 )
       path.subpaths.first.to_command.should == "M100-35 200 65 300 65H130"
       path.subpaths[1].to_command.should == "M100-35Z"
     end
+
   end
 
   describe SubPath do
