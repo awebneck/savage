@@ -42,24 +42,7 @@ module Savage
         x, y  = dot.x, dot.y
         dot.x = x*scale_x + y*skew_x  + tx
         dot.y = x*skew_y  + y*scale_y + ty
-
-        dot.x = dot.x.to_short_f
-        dot.y = dot.y.to_short_f
       end
 
   end
 end
-
-unless ::Object.instance_methods.include? :to_short_f
-  class ::Object
-
-    def to_short_f( precision=4 )
-      factor = 10 ** precision
-      rnd = (to_f * factor).round.to_f / factor
-      f, i = rnd, rnd.to_i
-      f == i ? i : f
-    end
-    
-  end
-end
-
