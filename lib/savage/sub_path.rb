@@ -50,5 +50,28 @@ module Savage
     def transform(*args)
       directions.each { |dir| dir.transform *args }
     end
+
+    def to_transformable_commands!
+      if !fully_transformable?
+        pen_x, pen_y = 0, 0
+        directions.each_with_index do |dir, index|
+          unless dir.fully_transformable?
+            directions[index] = dir.to_fully_transformable_dir( pen_x, pen_y )
+          end
+
+          if dir.absolute?
+            pen_x, pen_y = dir.movement
+          else
+            dx, dy = dir.movement
+            pen_x += dx
+            pen_y += dy
+          end
+        end
+      end
+    end
+
+    def fully_transformable?
+      directions.all? &:fully_transformable?
+    end
   end
 end

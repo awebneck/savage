@@ -17,6 +17,14 @@ module Savage
       transform( sx, 0, 0, sy, 0, 0 )
     end
 
+    # Public: rotate by angle degrees
+    # 
+    # - angle : rotation in degrees
+    # - cx    : center x
+    # - cy    : center y
+    #
+    # Returns nil
+    #
     # TODO:
     # make cx, cy be origin center
     def rotate( angle, cx=0, cy=0 )

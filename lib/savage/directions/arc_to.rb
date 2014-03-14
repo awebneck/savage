@@ -24,6 +24,7 @@ module Savage
         tx = ty = 0 if relative?
         transform_dot( target,  scale_x, skew_x, skew_y, scale_y, tx, ty)
       end
+
     end
   end
 end

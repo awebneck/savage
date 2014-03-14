@@ -25,8 +25,25 @@ module Savage
       arr.map! do |x|
         x.to_i == x ? x.to_i : x
       end
-      arr[0] + arr[1..-1].join(' ').gsub(/ -/,'-')
+      arr[0] + arr[1..-1].map {|i| to_short_f(i)}.join(' ').gsub(/ -/,'-')
     end
+
+    # Public: determine if this direction is fully transformable.
+    #         A fully transformable directions can accept any
+    #         transform including rotate.
+    #
+    # Returns: true by default
+    def fully_transformable?
+      true
+    end
+
+    private
+      
+      def to_short_f n
+        f = 1000000.0
+        n = (n * f).round / f
+        n == n.to_i ? n.to_i : n
+      end
   end
 end
 

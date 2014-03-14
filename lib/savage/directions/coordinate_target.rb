@@ -12,6 +12,10 @@ module Savage
       def to_a
         [command_code, @target]
       end
+
+      def fully_transformable?
+        false
+      end
     end
   end
 end

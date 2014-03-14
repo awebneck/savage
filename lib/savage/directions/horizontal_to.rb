@@ -14,6 +14,18 @@ module Savage
         self.target *= scale_x
         self.target += tx if absolute?
       end
+
+      def to_fully_transformable_dir( pen_x, pen_y )
+        if absolute?
+          LineTo.new( target + pen_x, pen_y, true )
+        else
+          LineTo.new( target, 0, false )
+        end
+      end
+
+      def movement
+        [target, 0]
+      end
     end
   end
 end
