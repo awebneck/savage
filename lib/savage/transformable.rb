@@ -5,8 +5,11 @@ module Savage
 
   module Transformable
 
-    # Matrix:
-    def transform(scale_x, skew_x, skew_y, scale_y, tx, ty)
+    # Matrix 2D:
+    # | a, c, e |
+    # | b, d, f |
+    # | 0, 0, 1 |
+    def transform(a, b, c, d, e, f)
     end
 
     def translate(tx, ty=0)
@@ -46,10 +49,10 @@ module Savage
 
     protected
 
-      def transform_dot( dot, scale_x, skew_x, skew_y, scale_y, tx, ty )
+      def transform_dot( dot, a, b, c, d, e, f )
         x, y  = dot.x, dot.y
-        dot.x = x*scale_x + y*skew_x  + tx
-        dot.y = x*skew_y  + y*scale_y + ty
+        dot.x = x*a + y*c + e
+        dot.y = x*b + y*d + f
       end
 
   end

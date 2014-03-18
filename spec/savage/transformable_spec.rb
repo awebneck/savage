@@ -37,13 +37,13 @@ describe Transformable do
     it 'can transform relative Horizontal and Vertical subpaths' do
       path = Parser.parse('m 50 50 h 100 v 100 h -100 v -100')
       path.rotate( 90, 100, 100 )
-      path.to_command.should == "M50-250l0-100 100 0 0 100-100 0"
+      path.to_command.should == "M-250 50l0 100-100 0 0-100 100 0"
     end
 
     it 'can transform absolute Horizontal and Vertical subpaths' do
       path = Parser.parse('M 50 50 H 150 V 150 H 50 V 50')
       path.rotate( 90, 100, 100 )
-      path.to_command.should == "M50-250 50-400 150-350 150-250 50-250"
+      path.to_command.should == "M-250 50-250 200-350 150-350 50-250 50"
     end
   end
 
@@ -90,8 +90,8 @@ describe Transformable do
       x, y = 50, 80
       dir = Directions::LineTo.new(x, y)
       dir.rotate(90)
-      dir.target.x.should == 80
-      dir.target.y.round.should == -50
+      dir.target.x.should == -80
+      dir.target.y.round.should == 50
     end
   end
 end
