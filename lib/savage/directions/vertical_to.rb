@@ -17,14 +17,14 @@ module Savage
 
       def to_fully_transformable_dir( pen_x, pen_y )
         if absolute?
-          LineTo.new( pen_x, target + pen_y, true )
+          LineTo.new( pen_x, target, true )
         else
           LineTo.new( 0, target, false )
         end
       end
 
       def movement
-        [0, target]
+        [nil, target]
       end
     end
   end

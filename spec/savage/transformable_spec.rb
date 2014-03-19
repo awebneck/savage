@@ -24,7 +24,7 @@ describe Transformable do
     it 'should transform subpaths recursively' do
       path = Parser.parse('M 0 100 L 100 200 L 200 200 H 30 M 0 100 Z')
       path.translate( 100, -135 )
-      path.subpaths.first.to_command.should == "M100-35 200 65 300 65 330 65"
+      path.subpaths.first.to_command.should == "M100-35 200 65 300 65 130 65"
       path.subpaths[1].to_command.should == "M100-35Z"
     end
 
@@ -43,7 +43,7 @@ describe Transformable do
     it 'can transform absolute Horizontal and Vertical subpaths' do
       path = Parser.parse('M 50 50 H 150 V 150 H 50 V 50')
       path.rotate( 90, 100, 100 )
-      path.to_command.should == "M-250 50-250 200-350 150-350 50-250 50"
+      path.to_command.should == "M-250 50-250 150-350 150-350 50-250 50"
     end
   end
 

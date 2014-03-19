@@ -59,12 +59,13 @@ module Savage
             directions[index] = dir.to_fully_transformable_dir( pen_x, pen_y )
           end
 
+          dx, dy = dir.movement
           if dir.absolute?
-            pen_x, pen_y = dir.movement
+            pen_x = dx if dx
+            pen_y = dy if dy
           else
-            dx, dy = dir.movement
-            pen_x += dx
-            pen_y += dy
+            pen_x += dx if dx
+            pen_y += dy if dy
           end
         end
       end
