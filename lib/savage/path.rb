@@ -5,6 +5,7 @@ module Savage
 
     include Utils
     include DirectionProxy
+    include Transformable
 
     attr_accessor :subpaths
 
@@ -41,5 +42,25 @@ module Savage
     def to_command
       @subpaths.collect { |subpath| subpath.to_command }.join
     end
+
+    def transform(*args)
+      dup.tap do |path|
+        path.to_transformable_commands!
+        path.subpaths.each {|subpath| subpath.transform *args }
+      end
+    end
+
+    # Public: make commands within transformable commands
+    #         H/h/V/v is considered not 'transformable'
+    #         because when they are rotated, they will
+    #         turn into other commands
+    def to_transformable_commands!
+      subpaths.each &:to_transformable_commands!
+    end
+
+    def fully_transformable?
+      subpaths.all? &:fully_transformable?
+    end
+
   end
 end

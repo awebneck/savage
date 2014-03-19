@@ -12,6 +12,11 @@ module Savage
       def to_a
         [command_code, @target.x, @target.y]
       end
+
+      def movement
+        [target.x, target.y]
+      end
+
     end
   end
 end

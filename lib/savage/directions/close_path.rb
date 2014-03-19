@@ -13,6 +13,10 @@ module Savage
       def command_code
         (absolute?) ? 'Z' : 'z'
       end
+
+      def movement
+        [0, 0]
+      end
     end
   end
 end

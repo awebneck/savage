@@ -227,13 +227,13 @@ describe Parser do
     end
 
     it 'should generate the same string given to it (assuming float values are used), if not changed in the interim' do
-      path_string = "M100.0 200.0A255.0 12.0-123.0 1 0 23.0-93.4L100.0 200.0 300.0 400.0Q1.233-34.0 255.0 12.0T255.0 12.0H-342.65Z"
+      path_string = "M100 200A255 12-123 1 0 23-93.4L100 200 300 400Q1.233-34 255 12T255 12H-342.65Z"
       path = Parser.parse(path_string)
       path.to_command.should == path_string
     end
 
     it "should be able to parse complex paths" do
-      path = Parser.parse("M74.89,146.249c0.042,0.552,0.376,0.685,0.744,0.293m50.543-9.1323c15.445-16.43,32.782-32.859,49.793-49.289    c-6.298,0.001-12.595,0.001-18.893,0c-10.813,10.37-21.759,20.737-32.275,31.107C74.249,134.323,74.424,140.285,74.89,146.249z")
+      path = Parser.parse("M74.89,146.249c042,0.552,0.376,0.685,0.744,0.293m50.543-9.1323c15.445-16.43,32.782-32.859,49.793-49.289    c-6.298,001-12.595,001-18.893,0c-10.813,10.37-21.759,20.737-32.275,31.107C74.249,134.323,74.424,140.285,74.89,146.249z")
       path.class.should == Path
       path.subpaths.length.should == 2
       path.subpaths[0].directions.length.should == 2
@@ -244,7 +244,7 @@ describe Parser do
       # this is a 100x100 square
       path = Parser.parse "M 0,0 L 1e2,0 100,1000e-1 L 0,10e+1"
       points = path.directions.map{|d| [d.target.x, d.target.y] }
-      points.should == [[0.0, 0.0], [100.0, 0.0], [100.0, 100.0], [0.0, 100.0]]
+      points.should == [[0, 0], [100, 0], [100, 100], [0, 100]]
     end
   end
 end

@@ -35,6 +35,13 @@ module Savage
         return (absolute?) ? 'C' : 'c' if @control_1
         (absolute?) ? 'S' : 's'
       end
+
+      def transform(scale_x, skew_x, skew_y, scale_y, tx, ty)
+        super
+        tx = ty = 0 if relative?
+        transform_dot( control_1, scale_x, skew_x, skew_y, scale_y, tx, ty) if control_1
+      end
+
     end
   end
 end

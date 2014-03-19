@@ -6,6 +6,7 @@ module Savage
   class Direction
 
     include Utils
+    include Transformable
 
     def initialize(absolute)
       @absolute = absolute
@@ -15,10 +16,31 @@ module Savage
       @absolute
     end
 
+    def relative?
+      !absolute?
+    end
+
     def to_command
       arr = to_a
-      arr[0] + arr[1..-1].join(' ').gsub(/ -/,'-')
+      arr[0] + arr[1..-1].map {|i| to_short_f(i)}.join(' ').gsub(/ -/,'-')
     end
+
+    # Public: determine if this direction is fully transformable.
+    #         A fully transformable directions can accept any
+    #         transform including rotate.
+    #
+    # Returns: true by default
+    def fully_transformable?
+      true
+    end
+
+    private
+      
+      def to_short_f n
+        f = 1000000.0
+        n = (n * f).round / f
+        n == n.to_i ? n.to_i : n
+      end
   end
 end
 
