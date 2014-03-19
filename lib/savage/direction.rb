@@ -22,9 +22,6 @@ module Savage
 
     def to_command
       arr = to_a
-      arr.map! do |x|
-        x.to_i == x ? x.to_i : x
-      end
       arr[0] + arr[1..-1].map {|i| to_short_f(i)}.join(' ').gsub(/ -/,'-')
     end
 
